@@ -20,7 +20,7 @@
   
 #### Funcionamento da aplicação:
 
-> A aplicaão deve receber os dados dos colaboradores e empresas onde cada empresa pode ter N colaboradores, mas um colaborador está atrelado somente a uma empresa.
+> A aplicação deve receber os dados dos colaboradores e empresas onde cada empresa pode ter N colaboradores, mas um colaborador está atrelado somente a uma empresa.
 
 ```csharp
 public class Colaborador
