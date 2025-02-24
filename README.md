@@ -48,3 +48,8 @@ public class Empresa
 - [ ] Atualizar por Id (colaborador/empresa).
 
 > Obs: Utilize os verbos HTTP correspondentes para cada implementação nas rotas, para que seja condizente o que está sendo processado na aplicação, e o que a rota indica.
+
+
+## Desafio
+
+*[Clique Aqui](https://sudden-manchego-90e.notion.site/APIs-usando-NET-8-1a0f51a76f4c80f68099dd3f867ccb61)* para acessar o desafio.
