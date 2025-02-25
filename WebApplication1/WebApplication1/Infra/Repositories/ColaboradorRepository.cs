@@ -1,0 +1,84 @@
+﻿using System.Data;
+using Dapper;
+using RH.API.Domain;
+using RH.API.Infra.Interfaces;
+
+namespace RH.API.Infra.Repositories;
+
+public class ColaboradorRepository : IColaboradorRepository
+{
+    private readonly IDbConnection _conn;
+
+    public ColaboradorRepository(IDbConnection conn)
+    {
+        _conn = conn;
+    }
+
+    public async Task<bool> AtualizarColaborador(Colaborador colaborador)
+    {
+        try
+        {
+            string sql = "UPDATE COLABORADORES SET NOME=@NOME,CPF=@CPF,MATRICULA=@MATRICULA WHERE COLABORADORID=@COLABORADORID";
+            var parametros = new
+            {
+                NOME = colaborador.Nome,
+                CPF = colaborador.Cpf,
+                MATRICULA = colaborador.Matricula,
+                COLABORADORID = colaborador.ColaboradorID
+            };
+            var colaboradorAtualizado = await _conn.ExecuteAsync(sql, parametros);
+            return colaboradorAtualizado > 0 ? true : false;
+        }
+        catch (Exception e) { throw; }
+    }
+
+    public async Task<Colaborador> BuscarColaboradoresPorId(int id)
+    {
+        try
+        {
+            string sql = $"SELECT TOP 1 * FROM COLABORADORES WHERE COLABORADORID={id}";
+            return await _conn.QueryFirstOrDefaultAsync<Colaborador>(sql);
+        }
+        catch (Exception e) { throw; }
+    }
+
+    public async Task<List<Colaborador>> BuscarTodosColaboradores()
+    {
+        try
+        {
+            string sql = "SELECT * FROM COLABORADORES";
+            var colaboradores = await _conn.QueryAsync<Colaborador>(sql);
+            return colaboradores.ToList();
+        }
+        catch (Exception e) { throw; }
+    }
+
+    public async Task<bool> ExcluirColaborador(int id)
+    {
+        try
+        {
+            string sql = $"DELETE FROM COLABORADORES WHERE COLABORADORID={id}";
+            var colaboradorDeletado = await _conn.ExecuteAsync(sql);
+            return colaboradorDeletado > 0 ? true : false;
+        }
+        catch (Exception e) { throw; }
+    }
+
+    public async Task<bool> InserirColaborador(Colaborador colaborador)
+    {
+        try
+        {
+            string sql = "INSERT INTO COLABORADORES VALUES (@NOME,@CPF,@MATRICULA,@EMPRESAID)";
+            var parametros = new
+            {
+                NOME = colaborador.Nome,
+                CPF = colaborador.Cpf,
+                MATRICULA = colaborador.Matricula,
+                EMPRESAID = colaborador.EmpresaID
+            };
+            var colaboradorInserido = await _conn.ExecuteAsync(sql, parametros);
+            return colaboradorInserido > 0 ? true : false;
+        }
+        catch (Exception e) { throw; }
+    }
+}
