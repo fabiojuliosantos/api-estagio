@@ -18,10 +18,13 @@ public class ColaboradorRepository : IColaboradorRepository
     {
         try
         {
-            string sql = "UPDATE COLABORADORES SET NOME='@NOME' WHERE COLABORADORID=@ID";
+            string sql = "UPDATE COLABORADORES SET NOME=@NOME, CPF=@CPF, MATRICULA=@MATRICULA, EMPRESAID=@EMPRESAID WHERE COLABORADORID=@ID";
             var parametros = new
             {
                 NOME = colaborador.Nome,
+                CPF =colaborador.Cpf,
+                MATRICULA = colaborador.Matricula,
+                EMPRESAID = colaborador.EmpresaID,
                 ID = colaborador.ColaboradorID
             };
 
