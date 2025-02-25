@@ -50,6 +50,12 @@ public class Empresa
 > Obs: Utilize os verbos HTTP correspondentes para cada implementação nas rotas, para que seja condizente o que está sendo processado na aplicação, e o que a rota indica.
 
 
-## Desafio
+## Materiais de Apoio:
 
-*[Clique Aqui](https://sudden-manchego-90e.notion.site/APIs-usando-NET-8-1a0f51a76f4c80f68099dd3f867ccb61)* para acessar o desafio.
+ - Ciclo de vida dos serviços: *[Clique Aqui](https://medium.com/@marcofsjrr/explorando-os-ciclos-de-vida-de-servi%C3%A7os-no-net-core-mecanismos-da-inje%C3%A7%C3%A3o-de-depend%C3%AAncia-b4609d616d53)*
+ - Documentação Dapper: *[Clique Aqui](https://www.learndapper.com/)*
+ - Padrão Repository: *[Clique Aqui](https://www.macoratti.net/11/10/net_pr1.htm)*
+
+<!-- ## Desafio
+
+*[Clique Aqui](https://sudden-manchego-90e.notion.site/APIs-usando-NET-8-1a0f51a76f4c80f68099dd3f867ccb61)* para acessar o desafio. -->
