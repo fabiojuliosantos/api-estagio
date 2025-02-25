@@ -23,9 +23,11 @@ builder.Services.AddScoped<IDbConnection>(provider =>
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionString));
 #region Servico
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
+builder.Services.AddScoped<IColaboradorService, ColaboradoresService>();
 #endregion
 #region Repositório
 builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
+builder.Services.AddScoped<IColaboradoresRepository, ColaboradoresRepository>();
 #endregion
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
