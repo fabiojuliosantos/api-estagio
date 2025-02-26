@@ -14,7 +14,7 @@ public class EmpresaRepository : IEmpresaRepository
         _conn = conn;
     }
 
-    public async Task<Empresa> BuscarEmpresaPorId(int id)
+    public async Task<Empresa> BuscarEmpresaPorIdAsync(int id)
     {
         try
         {
@@ -28,7 +28,7 @@ public class EmpresaRepository : IEmpresaRepository
         }
     }
 
-    public async Task<List<Empresa>> BuscarTodasEmpresas()
+    public async Task<List<Empresa>> BuscarTodasEmpresasAsync()
     {
         try
         {
@@ -42,13 +42,11 @@ public class EmpresaRepository : IEmpresaRepository
         }
     }
 
-    public async Task<bool> InserirEmpresa(Empresa empresa)
+    public async Task<bool> InserirEmpresaAsync(Empresa empresa)
     {
         try
         {
             string sql = $"INSERT INTO EMPRESAS VALUES(@EMPRESA)";
-
-            //string sql = string.Format("INSERT INTO EMPRESAS VALUES('{0}')", empresa.Nome);
 
             var parametros = new
             {
@@ -65,7 +63,7 @@ public class EmpresaRepository : IEmpresaRepository
         }
     }
 
-    public async Task<bool> AtualizarEmpresa(Empresa empresa)
+    public async Task<bool> AtualizarEmpresaAsync(Empresa empresa)
     {
         try
         {
@@ -82,7 +80,7 @@ public class EmpresaRepository : IEmpresaRepository
         catch (Exception) { throw; }
     }
 
-    public async Task<bool> ExcluirEmpresa(int id)
+    public async Task<bool> ExcluirEmpresaAsync(int id)
     {
         try
         {
