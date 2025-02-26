@@ -25,12 +25,10 @@ builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionSt
 
 #region Services
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
-builder.Services.AddScoped<IColaboradorService, ColaboradorService>();
 #endregion Services
 
 #region Repositories
 builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
-builder.Services.AddScoped<IColaboradorRepository, ColaboradorRepository>();
 #endregion Repositories
 
 builder.Services.AddControllers();

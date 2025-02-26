@@ -13,11 +13,11 @@ public class EmpresaService : IEmpresaService
         _repository = repository;
     }
 
-    public async Task<bool> AtualizarEmpresaAsync(Empresa empresa)
+    public async Task<bool> AtualizarEmpresa(Empresa empresa)
     {
         try 
         {
-            return await _repository.AtualizarEmpresaAsync(empresa);    
+            return await _repository.AtualizarEmpresa(empresa);    
         } 
         catch (Exception) 
         { 
@@ -25,11 +25,11 @@ public class EmpresaService : IEmpresaService
         }
     }
 
-    public async Task<Empresa> BuscarEmpresaPorIdAsync(int id)
+    public async Task<Empresa> BuscarEmpresaPorId(int id)
     {
         try 
         {
-            return await _repository.BuscarEmpresaPorIdAsync(id);
+            return await _repository.BuscarEmpresaPorId(id);
         } 
         catch (Exception) 
         {
@@ -41,7 +41,7 @@ public class EmpresaService : IEmpresaService
     {
         try
         {
-            var empresas = await _repository.BuscarTodasEmpresasAsync();
+            var empresas = await _repository.BuscarTodasEmpresas();
 
             return empresas;
         }
@@ -51,11 +51,11 @@ public class EmpresaService : IEmpresaService
         }
     }
 
-    public async Task<bool> ExcluirEmpresaAsync(int id)
+    public async Task<bool> ExcluirEmpresa(int id)
     {
         try 
         {
-            return await _repository.ExcluirEmpresaAsync(id);
+            return await _repository.ExcluirEmpresa(id);
         } 
         catch (Exception) 
         { 
@@ -63,11 +63,11 @@ public class EmpresaService : IEmpresaService
         }
     }
 
-    public async Task<bool> InserirEmpresaAsync(Empresa empresa)
+    public async Task<bool> InserirEmpresa(Empresa empresa)
     {
         try 
         {
-            return await _repository.InserirEmpresaAsync(empresa);
+            return await _repository.InserirEmpresa(empresa);
         } 
         catch (Exception) 
         { 

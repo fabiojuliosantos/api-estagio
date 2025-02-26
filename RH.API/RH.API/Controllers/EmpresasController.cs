@@ -33,7 +33,7 @@ public class EmpresasController : ControllerBase
     {
         try
         {
-            var empresas = await _service.BuscarEmpresaPorIdAsync(id);
+            var empresas = await _service.BuscarEmpresaPorId(id);
             return Ok(empresas);
         }
         catch (Exception)
@@ -46,7 +46,7 @@ public class EmpresasController : ControllerBase
     {
         try
         {
-            var empresas = await _service.InserirEmpresaAsync(empresa);
+            var empresas = await _service.InserirEmpresa(empresa);
             return Ok(empresas);
         }
         catch (Exception)
@@ -59,7 +59,7 @@ public class EmpresasController : ControllerBase
     {
         try
         {
-            var empresas = await _service.AtualizarEmpresaAsync(empresa);
+            var empresas = await _service.AtualizarEmpresa(empresa);
             return Ok(empresas);
         }
         catch (Exception)
@@ -72,7 +72,7 @@ public class EmpresasController : ControllerBase
     {
         try
         {
-            var empresas = await _service.ExcluirEmpresaAsync(id);
+            var empresas = await _service.ExcluirEmpresa(id);
             return Ok(empresas);
         }
         catch (Exception)
