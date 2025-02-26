@@ -10,13 +10,12 @@
 |Swagger | Ferramenta para documentação e testes de rotas| 
 
 #### Roteiro da criação da aplicação:
-- [ ] Criação do template da API.
-- [ ] Criação das Models.
-- [ ] Criação do Contexto das Models.
-- [ ] Criação e Execução das migrações.
-- [ ] Criação dos diretórios Infra/Repositories.
-- [ ] Criação dos diretórios Application/Services.
-- [ ] Implementação da lógica da aplicação.
+- [x] Criação do template da API.
+- [X] Criação das Models.
+- [X] Criação do Contexto das Models.
+- [X] Criação dos diretórios Infra/Repositories.
+- [X] Criação dos diretórios Application/Services.
+- [X] Implementação da lógica da aplicação.
   
 #### Funcionamento da aplicação:
 
