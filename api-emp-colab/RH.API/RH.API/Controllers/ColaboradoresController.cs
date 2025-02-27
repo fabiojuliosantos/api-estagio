@@ -33,13 +33,12 @@ namespace RH.API.Controllers
         {
             try
             {
-                var colaboradores = await _service.BuscarColaboradoresPorId(id);
-                if (colaboradores == null)
+                var colaborador = await _service.BuscarColaboradoresPorId(id);
+                if (colaborador == null)
                 {
                     return NotFound();
                 }
-                return Ok(colaboradores);
-
+                return Ok(colaborador);
             }
             catch (Exception) { throw; }
         }

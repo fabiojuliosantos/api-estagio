@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using Dapper;
-using Microsoft.IdentityModel.Tokens;
 using RH.API.Domain;
 using RH.API.Infra.Interfaces;
 
@@ -14,7 +13,7 @@ namespace RH.API.Infra.Repositories
         {
             _connection = connection;
         }
-        
+
         public async Task<bool> AtualizarColaborador(Colaborador colaborador)
         {
             try
@@ -32,7 +31,7 @@ namespace RH.API.Infra.Repositories
 
                 return colaboradorAtualizado > 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -42,11 +41,26 @@ namespace RH.API.Infra.Repositories
         {
             try
             {
-                string sql = "SELECT * FROM COLABORADORES WHERE COLABORADORID = @ID";
-                var colaborador = await _connection.QueryFirstOrDefaultAsync<Colaborador>(sql, new { ID = id });
-                return colaborador;
+                string sql = @"
+            SELECT c.*, e.EMPRESAID, e.NOME AS EmpresaNome
+            FROM COLABORADORES c
+            INNER JOIN EMPRESAS e ON c.EMPRESAID = e.EMPRESAID
+            WHERE c.COLABORADORID = @ID";
+
+                var colaborador = await _connection.QueryAsync<Colaborador, Empresa, Colaborador>(
+                    sql,
+                    (colaborador, empresa) =>
+                    {
+                        colaborador.Empresa = empresa;
+                        return colaborador;
+                    },
+                    new { ID = id },
+                    splitOn: "EMPRESAID"
+                );
+
+                return colaborador.FirstOrDefault();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -56,11 +70,24 @@ namespace RH.API.Infra.Repositories
         {
             try
             {
-                string sql = "SELECT * FROM COLABORADORES";
-                var colaboradores = await _connection.QueryAsync<Colaborador>(sql);
+                string sql = @"
+            SELECT c.*, e.EMPRESAID, e.NOME AS EmpresaNome
+            FROM COLABORADORES c
+            INNER JOIN EMPRESAS e ON c.EMPRESAID = e.EMPRESAID";
+
+                var colaboradores = await _connection.QueryAsync<Colaborador, Empresa, Colaborador>(
+                    sql,
+                    (colaborador, empresa) =>
+                    {
+                        colaborador.Empresa = empresa;
+                        return colaborador;
+                    },
+                    splitOn: "EMPRESAID"
+                );
+
                 return colaboradores.ToList();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -74,7 +101,7 @@ namespace RH.API.Infra.Repositories
                 var colaboradorExcluido = await _connection.ExecuteAsync(sql, new { ID = id });
                 return colaboradorExcluido > 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -95,7 +122,7 @@ namespace RH.API.Infra.Repositories
                 var colaboradorInserido = await _connection.ExecuteAsync(sql, parametros);
                 return colaboradorInserido > 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
