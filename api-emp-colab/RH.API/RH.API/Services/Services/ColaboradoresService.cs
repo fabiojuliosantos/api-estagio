@@ -6,47 +6,53 @@ namespace RH.API.Services.Services
 {
     public class ColaboradoresService : IColaboradorService
     {
-        private readonly IColaboradoresRepository _repository;
-        public ColaboradoresService(IColaboradoresRepository repository)
-        {
-            _repository = repository;
-        }
+        private readonly IColaboradoresRepository _colaboradoresRepository;
 
-        public async Task<bool> AtualizarColaborador(Colaborador colaborador)
+        public ColaboradoresService(IColaboradoresRepository colaboradoresRepository)
         {
-            try
-            {
-                return await _repository.AtualizarColaborador(colaborador);
-            }
-            catch { throw; }
-        }
-
-        public async Task<Colaborador> BuscarColaboradoresPorId(int id)
-        {
-            try
-            {
-                return await _repository.BuscarColaboradoresPorId(id);
-            }
-            catch { throw; }
-        }
-
-        public async Task<List<Colaborador>> BuscarTodosColaboradores()
-        {
-            try
-            {
-                return await _repository.BuscarTodosColaboradores();
-            }
-            catch { throw; }
-        }
-
-        public async Task<bool> ExcluirColaborador(int id)
-        {
-            return await _repository.ExcluirColaborador(id);
+            _colaboradoresRepository = colaboradoresRepository;
         }
 
         public async Task<bool> InserirColaborador(Colaborador colaborador)
         {
-            return await _repository.InserirColaborador(colaborador); 
+            ValidarColaborador(colaborador);
+            return await _colaboradoresRepository.InserirColaborador(colaborador);
+        }
+
+        public async Task<bool> AtualizarColaborador(Colaborador colaborador)
+        {
+            ValidarColaborador(colaborador);
+            return await _colaboradoresRepository.AtualizarColaborador(colaborador);
+        }
+
+        public async Task<Colaborador> BuscarColaboradoresPorId(int id)
+        {
+            return await _colaboradoresRepository.BuscarColaboradoresPorId(id);
+        }
+
+        public async Task<List<Colaborador>> BuscarTodosColaboradores()
+        {
+            return await _colaboradoresRepository.BuscarTodosColaboradores();
+        }
+
+        public async Task<bool> ExcluirColaborador(int id)
+        {
+            return await _colaboradoresRepository.ExcluirColaborador(id);
+        }
+
+        private void ValidarColaborador(Colaborador colaborador)
+        {
+            if (string.IsNullOrWhiteSpace(colaborador.Nome))
+                throw new Exception("O nome do colaborador é obrigatório.");
+
+            if (string.IsNullOrWhiteSpace(colaborador.CPF))
+                throw new Exception("O CPF do colaborador é obrigatório.");
+
+            if (colaborador.Matricula <= 0)
+                throw new Exception("A matrícula do colaborador deve ser um número positivo.");
+
+            if (colaborador.EmpresaId <= 0)
+                throw new Exception("O ID da empresa deve ser um número positivo.");
         }
     }
 }

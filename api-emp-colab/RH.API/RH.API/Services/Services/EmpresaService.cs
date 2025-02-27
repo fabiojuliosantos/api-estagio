@@ -16,6 +16,7 @@ public class EmpresaService : IEmpresaService
     {
         try
         {
+            ValidarEmpresa(empresa);
             return await _repository.AtualizarEmpresa(empresa);
         }
         catch (Exception ex) { throw; }
@@ -47,6 +48,13 @@ public class EmpresaService : IEmpresaService
 
     public async Task<bool> InserirEmpresa(Empresa empresa)
     {
+        ValidarEmpresa(empresa);
         return await _repository.InserirEmpresa(empresa);
+    }
+
+    private void ValidarEmpresa(Empresa empresa)
+    {
+        if (string.IsNullOrWhiteSpace(empresa.Nome))
+            throw new Exception("O nome da empresa não deve ser nulo!");
     }
 }

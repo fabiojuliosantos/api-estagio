@@ -14,7 +14,7 @@ namespace RH.API.Infra.Repositories
         {
             _connection = connection;
         }
-
+        
         public async Task<bool> AtualizarColaborador(Colaborador colaborador)
         {
             try
