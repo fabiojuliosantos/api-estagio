@@ -1,6 +1,8 @@
 ﻿using System.Data;
+using AutoMapper;
 using Dapper;
 using RH.API.Domain;
+using RH.API.DTOs;
 using RH.API.Infra.Interfaces;
 
 namespace RH.API.Infra.Repositories
@@ -8,10 +10,12 @@ namespace RH.API.Infra.Repositories
     public class ColaboradoresRepository : IColaboradoresRepository
     {
         private readonly IDbConnection _connection;
+        private readonly IMapper _mapper;  // Injetando AutoMapper
 
-        public ColaboradoresRepository(IDbConnection connection)
+        public ColaboradoresRepository(IDbConnection connection, IMapper mapper)
         {
             _connection = connection;
+            _mapper = mapper;
         }
 
         public async Task<bool> AtualizarColaborador(Colaborador colaborador)
@@ -28,7 +32,6 @@ namespace RH.API.Infra.Repositories
                     ID = colaborador.ColaboradorId
                 };
                 var colaboradorAtualizado = await _connection.ExecuteAsync(sql, parametros);
-
                 return colaboradorAtualizado > 0;
             }
             catch (Exception)
@@ -37,61 +40,48 @@ namespace RH.API.Infra.Repositories
             }
         }
 
-        public async Task<Colaborador> BuscarColaboradoresPorId(int id)
+        public async Task<ColaboradorDto> BuscarColaboradoresPorId(int id)
         {
             try
             {
                 string sql = @"
-            SELECT c.*, e.EMPRESAID, e.NOME AS EmpresaNome
-            FROM COLABORADORES c
-            INNER JOIN EMPRESAS e ON c.EMPRESAID = e.EMPRESAID
-            WHERE c.COLABORADORID = @ID";
+            SELECT C.ColaboradorId, C.Nome, C.CPF, C.Matricula, C.EmpresaId, E.NOME as EmpresaNome
+            FROM COLABORADORES C
+            INNER JOIN EMPRESAS E ON E.EMPRESAID = C.EMPRESAID
+            WHERE C.ColaboradorId = @ID";
 
-                var colaborador = await _connection.QueryAsync<Colaborador, Empresa, Colaborador>(
-                    sql,
-                    (colaborador, empresa) =>
-                    {
-                        colaborador.Empresa = empresa;
-                        return colaborador;
-                    },
-                    new { ID = id },
-                    splitOn: "EMPRESAID"
-                );
-
-                return colaborador.FirstOrDefault();
+                var colaboradores = await _connection.QueryAsync<ColaboradorDto>(sql, new { ID = id });
+                return colaboradores.FirstOrDefault(); // Retorna o primeiro ou nulo
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message); // Logando o erro
                 throw;
             }
         }
 
-        public async Task<List<Colaborador>> BuscarTodosColaboradores()
+
+
+
+
+        public async Task<List<ColaboradorDto>> BuscarTodosColaboradores()
         {
             try
             {
-                string sql = @"
-            SELECT c.*, e.EMPRESAID, e.NOME AS EmpresaNome
-            FROM COLABORADORES c
-            INNER JOIN EMPRESAS e ON c.EMPRESAID = e.EMPRESAID";
+                string sql = "SELECT C.ColaboradorId, C.Nome, C.CPF, C.Matricula, C.EmpresaId, E.NOME as EmpresaNome " +
+                             "FROM COLABORADORES C " +
+                             "INNER JOIN EMPRESAS E ON E.EMPRESAID = C.EMPRESAID";
 
-                var colaboradores = await _connection.QueryAsync<Colaborador, Empresa, Colaborador>(
-                    sql,
-                    (colaborador, empresa) =>
-                    {
-                        colaborador.Empresa = empresa;
-                        return colaborador;
-                    },
-                    splitOn: "EMPRESAID"
-                );
-
-                return colaboradores.ToList();
+                var colaboradores = await _connection.QueryAsync<ColaboradorDto>(sql);
+                return colaboradores.ToList(); // Adicionando o retorno da lista
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message); // Logando o erro
                 throw;
             }
         }
+
 
         public async Task<bool> ExcluirColaborador(int id)
         {
