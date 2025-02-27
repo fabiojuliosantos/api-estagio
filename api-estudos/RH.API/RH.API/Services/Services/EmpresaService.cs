@@ -2,48 +2,51 @@
 using RH.API.Infra.Interfaces;
 using RH.API.Services.Interface;
 
-namespace RH.API.Services.Services
+namespace RH.API.Services.Services;
+
+public class EmpresaService : IEmpresaService
 {
-    public class EmpresaService : IEmpresaService
+    private readonly IEmpresaRepository _repository;
+    public EmpresaService(IEmpresaRepository repository)
     {
-        private readonly IEmpresaService _service;
-        public EmpresaService(IEmpresaService service)
-        {
-            _service = service;
-        }
+        _repository = repository;
+    }
 
+    public async Task<bool> AtualizarEmpresa(Empresa empresa)
+    {
+        try
+        {
+            return await _repository.AtualizarEmpresa(empresa);
+        }
+        catch (Exception ex) { throw; }
+    }
 
-        public Task<bool> AtualizarEmpresa(Empresa empresa)
+    public async Task<Empresa> BuscarEmpresaPorId(int id)
+    {
+        try
         {
-            throw new NotImplementedException();
+            return await _repository.BuscarEmpresaPorId(id);
         }
+        catch (Exception ex) { throw; }
+    }
 
-        public Task<Empresa> BuscarEmpresaPorId(int id)
+    public async Task<List<Empresa>> BuscarTodasEmpresasAsync()
+    {
+        try
         {
-            throw new NotImplementedException();
+            var empresas = await _repository.BuscarTodasEmpresas();
+            return empresas;
         }
+        catch (Exception) { throw; }
+    }
 
-        public async Task<List<Empresa>> BuscarTodasEmpresasAsync()
-        {
-            try
-            {
-                var empresas = await _repository.BuscarTodasEmpresasAsync();
-                return empresas;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+    public async Task<bool> ExcluirEmpresa(int id)
+    {
+        return await _repository.ExcluirEmpresa(id);
+    }
 
-        public Task<bool> ExcluirEmpresa(int id)
-        {
-            throw new NotImplementedException();
-        }
-        [HttpPost("Inserir")]
-        public async Task<bool> InserirEmpresa(Empresa empresa)
-        {
-            throw new NotImplementedException();
-        }
+    public async Task<bool> InserirEmpresa(Empresa empresa)
+    {
+        return await _repository.InserirEmpresa(empresa);
     }
 }
