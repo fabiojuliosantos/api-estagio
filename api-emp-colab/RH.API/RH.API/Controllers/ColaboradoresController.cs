@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RH.API.Domain;
+using RH.API.Dto;
 using RH.API.Services.Interface;
 
 namespace RH.API.Controllers
@@ -44,7 +45,7 @@ namespace RH.API.Controllers
         }
 
         [HttpPost("inserir-colaborador")]
-        public async Task<IActionResult> Inserir([FromBody] Colaborador colaborador)
+        public async Task<IActionResult> Inserir([FromBody] CreateColaboradorDto colaborador)
         {
             try
             {
@@ -58,27 +59,31 @@ namespace RH.API.Controllers
             catch (Exception ex) { throw; }
         }
 
-        [HttpPut("atualizar-colaborador")]
-        public async Task<IActionResult> Atualizar([FromBody] Colaborador colab)
+        [HttpPut("atualizar-colaborador/{id}")]
+        public async Task<IActionResult> Atualizar(int id, [FromBody] UpdateColaboradorDto colaboradorDto)
         {
             try
             {
-                var colabs = await _service.AtualizarColaborador(colab);
-                if (colabs == null)
+                var resultado = await _service.AtualizarColaborador(id, colaboradorDto);
+                if (resultado == null)
                 {
                     return NotFound();
                 }
-                return Ok(colabs);
+                return Ok(resultado);
             }
-            catch (Exception ex) { throw; }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
+
         [HttpDelete("excluir/{id}")]
         public async Task<IActionResult> ExcluirColaborador(int id)
         {
             try
             {
                 var colab = await _service.ExcluirColaborador(id);
-                if(colab == null)
+                if (colab == null)
                 {
                     return NotFound();
                 }

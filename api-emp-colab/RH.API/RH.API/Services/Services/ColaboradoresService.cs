@@ -1,4 +1,5 @@
 ﻿using RH.API.Domain;
+using RH.API.Dto;
 using RH.API.Infra.Interfaces;
 using RH.API.Services.Interface;
 
@@ -13,17 +14,36 @@ namespace RH.API.Services.Services
             _colaboradoresRepository = colaboradoresRepository;
         }
 
-        public async Task<bool> InserirColaborador(Colaborador colaborador)
+        public async Task<bool> InserirColaborador(CreateColaboradorDto colaboradorDto)
         {
-            ValidarColaborador(colaborador);
-            ValidaCpf(colaborador.CPF);
+            ValidarColaborador(colaboradorDto);
+            ValidaCpf(colaboradorDto.CPF);
+
+            var colaborador = new Colaborador
+            {
+                Nome = colaboradorDto.Nome,
+                CPF = colaboradorDto.CPF,
+                Matricula = colaboradorDto.Matricula,
+                EmpresaId = colaboradorDto.EmpresaId
+            };
+
             return await _colaboradoresRepository.InserirColaborador(colaborador);
         }
 
-        public async Task<bool> AtualizarColaborador(Colaborador colaborador)
+        public async Task<bool> AtualizarColaborador(int id, UpdateColaboradorDto colaboradorDto)
         {
-            ValidarColaborador(colaborador);
-            ValidaCpf(colaborador.CPF);
+            ValidarColaborador(colaboradorDto);
+            ValidaCpf(colaboradorDto.CPF);
+
+            var colaborador = new Colaborador
+            {
+                ColaboradorId = id,
+                Nome = colaboradorDto.Nome,
+                CPF = colaboradorDto.CPF,
+                Matricula = colaboradorDto.Matricula,
+                EmpresaId = colaboradorDto.EmpresaId
+            };
+
             return await _colaboradoresRepository.AtualizarColaborador(colaborador);
         }
 
@@ -42,7 +62,10 @@ namespace RH.API.Services.Services
             return await _colaboradoresRepository.ExcluirColaborador(id);
         }
 
-        private void ValidarColaborador(Colaborador colaborador)
+        #region metodos de validações
+
+        #region validação de nulidade
+        private void ValidarColaborador(IColaboradorDto colaborador)
         {
             if (string.IsNullOrWhiteSpace(colaborador.Nome))
                 throw new Exception("O nome do colaborador é obrigatório.");
@@ -57,7 +80,10 @@ namespace RH.API.Services.Services
                 throw new Exception("O ID da empresa deve ser um número positivo.");
         }
 
-         private void ValidaCpf(string cpf)
+        #endregion
+
+        #region validação de cpf
+        private void ValidaCpf(string cpf)
         {
             if (cpf.Length != 11)
             {
@@ -112,6 +138,10 @@ namespace RH.API.Services.Services
                 throw new Exception("O CPF é inválido.");
             }
         }
+
+        #endregion
+
+        #endregion
     }
 
 }

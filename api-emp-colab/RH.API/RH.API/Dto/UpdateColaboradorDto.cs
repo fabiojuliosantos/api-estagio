@@ -1,6 +1,6 @@
 ﻿namespace RH.API.Dto;
 
-public class CreateColaboradorDto : IColaboradorDto
+public class UpdateColaboradorDto : IColaboradorDto
 {
     public string Nome { get; set; }
     public string CPF { get; set; }
