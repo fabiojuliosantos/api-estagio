@@ -21,7 +21,14 @@ public class EmpresasController : ControllerBase
         try
         {
             var empresas = await _service.BuscarTodasEmpresasAsync();
-            return Ok(empresas);
+            if (empresas == null || !empresas.Any())
+            {
+                return NotFound("Não foi possível localizar nenhuma empresa.");
+            }
+            else
+            {
+                return Ok(empresas);
+            }
         }
         catch (Exception ex) { throw; }
     }
@@ -32,7 +39,14 @@ public class EmpresasController : ControllerBase
         try
         {
             var empresas = await _service.BuscarEmpresaPorIdAsync(id);
-            return Ok(empresas);
+            if (empresas == null)
+            {
+                return NotFound($"Não foi possível localizar a empresa com id {id}.");
+            }
+            else
+            {
+                return Ok(empresas);
+            }
         }
         catch (Exception ex) { throw; }
     }
@@ -42,8 +56,15 @@ public class EmpresasController : ControllerBase
     {
         try
         {
-            var empresas = await _service.InserirEmpresaAsync(empresa);
-            return Ok(empresas);
+            var sucesso = await _service.InserirEmpresaAsync(empresa);
+            if (sucesso)
+            {
+                return CreatedAtAction(nameof(BuscarPorId), new { id = empresa.EmpresaID }, empresa);
+            }
+            else 
+            {
+                return BadRequest("Não foi possível inserir a empresa.");
+            }
         }
         catch (Exception ex) { throw; }
     }
@@ -53,8 +74,15 @@ public class EmpresasController : ControllerBase
     {
         try
         {
-            var empresas = await _service.AtualizarEmpresaAsync(empresa);
-            return Ok(empresas);
+            var sucesso = await _service.AtualizarEmpresaAsync(empresa);
+            if (sucesso)
+            {
+                return Ok("Empresa Atualizada com sucesso!");
+            }
+            else
+            {
+                return BadRequest("Não foi possível atualizar a empresa.");
+            }
         }
         catch (Exception ex) { throw; }
     }
@@ -64,8 +92,15 @@ public class EmpresasController : ControllerBase
     {
         try
         {
-            var empresas = await _service.ExcluirEmpresaAsync(id);
-            return Ok(empresas);
+            var sucesso = await _service.ExcluirEmpresaAsync(id);
+            if (sucesso)
+            {
+            return Ok("Empresa deletada com sucesso!");
+            }
+            else
+            {
+                return BadRequest("Não foi possível deletar a empresa.");
+            }
         }
         catch (Exception ex) { throw; }
     }

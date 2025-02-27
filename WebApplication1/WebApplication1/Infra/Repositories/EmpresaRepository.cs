@@ -13,6 +13,11 @@ public class EmpresaRepository : IEmpresaRepository
     {
         _conn = conn;
     }
+
+    public EmpresaRepository()
+    {
+    }
+
     public async Task<List<Empresa>> BuscarTodasEmpresas()
     {
         try

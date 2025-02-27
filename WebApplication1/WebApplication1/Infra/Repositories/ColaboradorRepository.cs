@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.ComponentModel.Design;
+using System.Data;
 using Dapper;
 using RH.API.Domain;
 using RH.API.Infra.Interfaces;
@@ -36,7 +37,11 @@ public class ColaboradorRepository : IColaboradorRepository
     {
         try
         {
-            string sql = $"SELECT TOP 1 * FROM COLABORADORES WHERE COLABORADORID={id}";
+            string sql = @$"SELECT TOP 1 C.*,E.NOME AS NomeDaEmpresa
+            FROM COLABORADORES C
+            INNER JOIN EMPRESAS E
+            ON C.EMPRESAID = E.EMPRESAID
+            WHERE COLABORADORID={id}";
             return await _conn.QueryFirstOrDefaultAsync<Colaborador>(sql);
         }
         catch (Exception e) { throw; }
@@ -46,7 +51,12 @@ public class ColaboradorRepository : IColaboradorRepository
     {
         try
         {
-            string sql = "SELECT * FROM COLABORADORES";
+            string sql = @"
+            SELECT C.*,E.NOME AS NomeDaEmpresa
+            FROM COLABORADORES C
+            INNER JOIN EMPRESAS E
+            ON C.EMPRESAID = E.EMPRESAID
+            ";
             var colaboradores = await _conn.QueryAsync<Colaborador>(sql);
             return colaboradores.ToList();
         }

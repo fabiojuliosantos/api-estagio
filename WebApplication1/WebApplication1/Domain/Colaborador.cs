@@ -8,4 +8,5 @@ public class Colaborador
     public int Matricula {  get; set; }
     public int EmpresaID { get; set; }
 
+    public string NomeDaEmpresa { get; set; }
 }
