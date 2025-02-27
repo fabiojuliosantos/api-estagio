@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RH.API.Domain;
 using RH.API.Services.Interface;
 
 namespace RH.API.Controllers
@@ -9,12 +10,13 @@ namespace RH.API.Controllers
     public class EmpresasController : ControllerBase
     {
         private readonly IEmpresaService _service;
+
         public EmpresasController(IEmpresaService service)
         {
             _service = service;
         }
 
-        [HttpGet("")]
+        [HttpGet]
         public async Task<IActionResult> BuscarTodas()
         {
             try
@@ -22,10 +24,55 @@ namespace RH.API.Controllers
                 var empresas = await _service.BuscarTodasEmpresasAsync();
                 return Ok(empresas);
             }
-            catch (Exception)
+            catch (Exception ex) { throw; }
+        }
+
+        [HttpGet("buscar-id/{id}")]
+        public async Task<IActionResult> BuscarPorId(int id)
+        {
+            try
             {
-                throw;
+                var empresas = await _service.BuscarEmpresaPorId(id);
+
+                if (empresas == null)
+                {
+                    return NotFound(new { message = "Empresa não encontrada." });
+                }
+
+                return Ok(empresas);
             }
+            catch (Exception) { throw; }
+        }
+
+        [HttpPost("inserir")]
+        public async Task<IActionResult> Inserir([FromBody] Empresa empresa)
+        {
+            try
+            {
+                var empresas = await _service.InserirEmpresa(empresa);
+                return Ok(empresas);
+            }
+            catch (Exception ex) { throw; }
+        }
+        [HttpPut("atualizar")]
+        public async Task<IActionResult> Atualizar([FromBody] Empresa empresa)
+        {
+            try
+            {
+                var empresas = await _service.AtualizarEmpresa(empresa);
+                return Ok(empresas);
+            }
+            catch (Exception ex) { throw; }
+        }
+        [HttpDelete("excluir/{id}")]
+        public async Task<IActionResult> Excluir(int id)
+        {
+            try
+            {
+                var empresas = await _service.ExcluirEmpresa(id);
+                return Ok(empresas);
+            }
+            catch (Exception ex) { throw; }
         }
     }
 }
