@@ -1,7 +1,7 @@
 using rh.api.Infra.Interfaces;
 using rh.api.Services.Interface;
 using rh.api.Services.Services;
-using Microsoft.EntityFrameworkCore; // Required for UseSqlServer
+using Microsoft.EntityFrameworkCore; 
 using System.Data;
 using System.Data.SqlClient;
 using rh.api.Infra.Context;
@@ -18,13 +18,13 @@ builder.Services.AddScoped<IDbConnection>(provider =>
     return connection;
 });
 
-// Registering the DbContext with the correct method
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString)); // This works after adding the required package
+    options.UseSqlServer(connectionString)); 
 
 #region Services
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
-builder.Services.AddScoped<IColaboradorService, ColaboradorService>(); // Certifique-se de registrar a interface corretamente
+builder.Services.AddScoped<IColaboradorService, ColaboradorService>(); 
 #endregion Services
 
 #region Repositories
@@ -38,7 +38,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

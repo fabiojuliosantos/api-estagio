@@ -16,11 +16,6 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        //base.OnModelCreating(modelBuilder);
-
-        //// Exemplo de mapeamento
-        //modelBuilder.Entity<Colaborador>()
-        //    .ToTable("COLABORADORES")
-        //    .HasKey(c => c.ColaboradorID);
+       
     }
 }
