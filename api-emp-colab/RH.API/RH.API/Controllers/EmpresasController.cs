@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using RH.API.Domain;
 using RH.API.Services.Interface;
+using System;
+using System.Threading.Tasks;
 
 namespace RH.API.Controllers
 {
@@ -24,7 +26,10 @@ namespace RH.API.Controllers
                 var empresas = await _service.BuscarTodasEmpresasAsync();
                 return Ok(empresas);
             }
-            catch (Exception ex) { throw; }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro ao buscar empresas: " + ex.Message);
+            }
         }
 
         [HttpGet("buscar-id/{id}")]
@@ -32,10 +37,15 @@ namespace RH.API.Controllers
         {
             try
             {
-                var empresas = await _service.BuscarEmpresaPorId(id);
-                return Ok(empresas);
+                var empresa = await _service.BuscarEmpresaPorId(id);
+                if (empresa == null)
+                    return NotFound("Empresa não encontrada.");
+                return Ok(empresa);
             }
-            catch (Exception) { throw; }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro ao buscar empresa: " + ex.Message);
+            }
         }
 
         [HttpPost("inserir")]
@@ -43,30 +53,45 @@ namespace RH.API.Controllers
         {
             try
             {
-                var empresas = await _service.InserirEmpresa(empresa);
-                return Ok(empresas);
+                await _service.InserirEmpresa(empresa);
+                return Ok("Empresa inserida com sucesso.");
             }
-            catch (Exception ex) { throw; }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro ao inserir empresa: " + ex.Message);
+            }
         }
+
         [HttpPut("atualizar")]
         public async Task<IActionResult> Atualizar([FromBody] Empresa empresa)
         {
             try
             {
-                var empresas = await _service.AtualizarEmpresa(empresa);
-                return Ok(empresas);
+                var atualizada = await _service.AtualizarEmpresa(empresa);
+                if (atualizada == null)
+                    return NotFound("Empresa não encontrada para atualização.");
+                return Ok("Empresa atualizada com sucesso.");
             }
-            catch (Exception ex) { throw; }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro ao atualizar empresa: " + ex.Message);
+            }
         }
+
         [HttpDelete("excluir/{id}")]
         public async Task<IActionResult> Excluir(int id)
         {
             try
             {
-                var empresas = await _service.ExcluirEmpresa(id);
-                return Ok(empresas);
+                var excluida = await _service.ExcluirEmpresa(id);
+                if (excluida == null)
+                    return NotFound("Empresa não encontrada para exclusão.");
+                return Ok("Empresa excluída com sucesso.");
             }
-            catch (Exception ex) { throw; }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro ao excluir empresa: " + ex.Message);
+            }
         }
     }
 }
