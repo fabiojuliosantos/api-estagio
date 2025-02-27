@@ -1,6 +1,8 @@
-﻿using RH.API.Domain;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using RH.API.Domain;
 using RH.API.Infra.Interfaces;
 using RH.API.Services.Interface;
+using RH.API.Validacao;
 
 namespace RH.API.Services.Services;
 
@@ -53,7 +55,15 @@ public class ColaboradorService : IColaboradorService
     {
         try
         {
-            return await _repository.InserirColaborador(colaborador);
+            Validacoes validacao = new();
+            // Fazer validação para o cpf do colaborador
+
+            bool validacaoCpf = validacao.ValidaCpf(colaborador.Cpf);
+
+            if (validacaoCpf)
+                return await _repository.InserirColaborador(colaborador);
+            else
+                throw new Exception("Cpf inválido!");
         }
         catch (Exception ex) { throw; }
     }

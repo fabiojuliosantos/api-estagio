@@ -39,8 +39,8 @@ public class ColaboradorRepository : IColaboradorRepository
     {
         try
         {
-            string sql = $"SELECT TOP 1 * FROM COLABORADORES WHERE COLABORADORID={id}";
-            var colaborador = await _connection.QueryFirstOrDefaultAsync<Colaborador>(sql);
+            string sql = $"SELECT TOP 1 C.*, E.NOME AS NOMEEMPRESA FROM COLABORADORES C INNER JOIN EMPRESAS E ON E.EMPRESAID = C.EMPRESAID WHERE C.COLABORADORID = {id}";
+            var colaborador = await _connection.QueryFirstOrDefaultAsync<Colaborador>(sql); //usar queryasync em caso de erro
             return colaborador;
         }
         catch (Exception ex) { throw; }
@@ -50,8 +50,8 @@ public class ColaboradorRepository : IColaboradorRepository
     {
         try
         {
-            string sql = "SELECT * FROM COLABORADORES";
-            var colaboradores = await _connection.QueryAsync<Colaborador>(sql);
+            string sql = "SELECT C.*, E.NOME AS NOMEEMPRESA FROM COLABORADORES C INNER JOIN EMPRESAS E ON E.EMPRESAID = C.EMPRESAID"; // Retornando também o nome da empresa
+            var colaboradores = await _connection.QueryAsync<Colaborador>(sql); 
 
             //await _connection.QueryFirstOrDefaultAsync<Empresa>(sql); // Retorna top 1
 

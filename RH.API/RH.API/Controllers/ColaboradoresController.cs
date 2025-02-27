@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using RH.API.Data.Dtos;
 using RH.API.Domain;
+using RH.API.Infra.Context;
 using RH.API.Services.Interface;
 
 namespace RH.API.Controllers;
@@ -9,10 +12,12 @@ namespace RH.API.Controllers;
 public class ColaboradorController : ControllerBase
 {
     private readonly IColaboradorService _service;
+    private readonly IMapper _mapper;
 
-    public ColaboradorController(IColaboradorService service)
+    public ColaboradorController(IColaboradorService service, IMapper mapper)
     {
         _service = service;
+        _mapper = mapper;
     }
 
     [HttpGet("retornar")]
@@ -21,9 +26,15 @@ public class ColaboradorController : ControllerBase
         try
         {
             var colaboradores = await _service.BuscarTodosColaboradoresAsync();
-            return Ok(colaboradores);
+            if (colaboradores != null)
+                return Ok(colaboradores);
+
+            return NotFound(new { message = "Não há colaboradores registrados!" });
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Erro ao retornar registros!", error = ex.Message });
+        }
     }
 
 
@@ -33,20 +44,31 @@ public class ColaboradorController : ControllerBase
         try
         {
             var colaboradores = await _service.BuscarColaboradorPorId(id);
-            return Ok(colaboradores);
+            if (colaboradores != null)
+                return Ok(colaboradores);
+
+            return NotFound(new { message = $"O colaborador com ID {id}, não foi encontrado!" });
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Erro ao retornar registro!", error = ex.Message });
+        }
     }
 
     [HttpPost("inserir")]
-    public async Task<IActionResult> InserirColaborador([FromBody] Colaborador colaborador)
+    public async Task<IActionResult> InserirColaborador([FromBody] CreateColaboradorDto colaboradorDto)
     {
         try
         {
+            Colaborador colaborador = _mapper.Map<Colaborador>(colaboradorDto);
+
             var colaboradores = await _service.InserirColaborador(colaborador);
-            return Ok(colaboradores);
+            return StatusCode(201, new { message = "Colaborador criado com sucesso!" });
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = "Erro ao inserir registro!", error = ex.Message });
+        }
     }
 
     [HttpPut("atualizar")]
@@ -55,9 +77,15 @@ public class ColaboradorController : ControllerBase
         try
         {
             var colaboradores = await _service.AtualizarColaborador(colaborador);
-            return Ok(colaboradores);
+            if (colaboradores != false)
+                return StatusCode(204, new { message = "Colaborador atualizado com sucesso!" });
+
+            return NotFound(new { message = "O colaborador não foi encontrado!" });
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Erro ao atualizar registro!", error = ex.Message });
+        }
     }
 
     [HttpDelete("excluir/{id}")]
@@ -66,8 +94,14 @@ public class ColaboradorController : ControllerBase
         try
         {
             var colaboradores = await _service.ExcluirColaborador(id);
-            return Ok(colaboradores);
+            if (colaboradores != false)
+                return StatusCode(204, new { message = "Colaborador removido com sucesso!" });
+
+            return NotFound(new { message = $"O colaborador com ID {id}, não foi encontrado!" });
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Erro ao excluir registro!", error = ex.Message });
+        }
     }
 }

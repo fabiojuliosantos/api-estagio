@@ -9,7 +9,8 @@ public class AppDbContext : DbContext
     {
 
     }
-    public DbSet<Colaborador> ? Colaboradores { get; set; } // Criando tabela de Colabo que pode ser nula
+
+    public DbSet<Colaborador> ? Colaboradores { get; set; } // Criando tabela de Colaborador que pode ser nula
     public DbSet<Empresa> ? Empresas { get; set; } // Criando tabela de Empresas que pode ser nula
 
     // 

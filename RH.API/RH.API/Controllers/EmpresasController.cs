@@ -24,11 +24,17 @@ public class EmpresasController : ControllerBase
         try
         {
             var empresas = await _service.BuscarTodasEmpresasAsync();
-            return Ok(empresas);
+            if (empresas != null)
+                return Ok(empresas);
+
+            return NotFound(new { message = "Não há colaboradores registrados!" });
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Erro ao retornar registros!", error = ex.Message });
+        }
     }
-    
+
 
     [HttpGet("retornar/{id}")]
     public async Task<IActionResult> BuscarPorId(int id) // Utilizar FromQUery quando for parametros opcionais
@@ -36,9 +42,15 @@ public class EmpresasController : ControllerBase
         try
         {
             var empresas = await _service.BuscarEmpresaPorId(id);
-            return Ok(empresas);
+            if (empresas != null)
+                return Ok(empresas);
+
+            return NotFound(new { message = $"A empresa com ID {id}, não foi encontrada!" });
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Erro ao retornar registro!", error = ex.Message });
+        }
     }
 
     [HttpPost("inserir")]
@@ -47,9 +59,12 @@ public class EmpresasController : ControllerBase
         try
         {
             var empresas = await _service.InserirEmpresa(empresa);
-            return Ok(empresas);
+            return StatusCode(201, new { message = "Empresa criada com sucesso!" });
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = "Erro ao inserir registro!", error = ex.Message });
+        }
     }
 
     [HttpPut("atualizar")]
@@ -58,9 +73,15 @@ public class EmpresasController : ControllerBase
         try
         {
             var empresas = await _service.AtualizarEmpresa(empresa);
-            return Ok(empresas);
+            if (empresa != null)
+                return StatusCode(204, new {message = "Empresa atualizada com sucesso!"});
+
+            return NotFound(new { message = "O colaborador não foi encontrado!" });
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Erro ao inserir registro!", error = ex.Message });
+        }
     }
 
     [HttpDelete("excluir/{id}")]
@@ -69,8 +90,14 @@ public class EmpresasController : ControllerBase
         try
         {
             var empresas = await _service.ExcluirEmpresa(id);
-            return Ok(empresas);
+            if (empresas != false)
+                return StatusCode(204, new { message = "Empresa excluida com sucesso!" });
+
+            return NotFound(new { message = $"A empresa com ID {id}, não foi encontrada!" });
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Erro ao inserir registro!", error = ex.Message });
+        }
     }
 }
