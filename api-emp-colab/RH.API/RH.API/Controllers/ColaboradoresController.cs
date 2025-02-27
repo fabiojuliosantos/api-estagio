@@ -24,7 +24,7 @@ namespace RH.API.Controllers
                 var colaboradores = await _service.BuscarTodosColaboradores();
                 return Ok(colaboradores);
             }
-            catch (Exception ex) { throw; }
+            catch (Exception ex) { return StatusCode(500, "Erro ao inserir empresa: " + ex.Message)};
         }
 
         [HttpGet("colaborador-id/{id}")]
@@ -33,7 +33,12 @@ namespace RH.API.Controllers
             try
             {
                 var colaboradores = await _service.BuscarColaboradoresPorId(id);
+                if (colaboradores == null)
+                {
+                    return NotFound();
+                }
                 return Ok(colaboradores);
+
             }
             catch (Exception) { throw; }
         }
@@ -44,6 +49,10 @@ namespace RH.API.Controllers
             try
             {
                 var colabs = await _service.InserirColaborador(colaborador);
+                if (colabs == null)
+                {
+                    return NotFound();
+                }
                 return Ok(colabs);
             }
             catch (Exception ex) { throw; }
