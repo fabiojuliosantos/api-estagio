@@ -1,5 +1,25 @@
 # APIs usando .NET 8
 
+
+## TO-DO:
+
+> As Seguintes tarefas devem ser realizadas para finalização do projeto:
+
+#### Geral:
+- [ ] Ao realizar o cadastro, deleção ou atualização de um item (colaborador/empresa), retornar a mensagem de sucesso ou erro da operação.
+- [ ] Caso os itens buscados por id não houverem retorno (null) retornar o código 404 NotFound na Controller.
+
+
+
+#### Colaborador:
+- [ ] Implementar a lógica de CRUD para a classe de Colaborador .
+- [ ] Realizar a validação dos dados de entrada do Colaborador.
+- [ ] Criar DTO para receber no processo de cadastro do colaborador, todos os dados do mesmo EXCETO o ColaboradorID que é autoincrementado.
+- [ ] Realizar a validação de CPF do colaborador.
+- [ ] Quando a busca do colaborador for realizada, retornar a empresa a qual ele está atrelado. Seja a busca de todas as empresas, ou a busca por ID (Faça as devidas alterações para tal).
+
+
+
 ### Ferramentas utilizadas:
 
 |Ferramenta | Descricão |
@@ -10,13 +30,12 @@
 |Swagger | Ferramenta para documentação e testes de rotas| 
 
 #### Roteiro da criação da aplicação:
-- [ ] Criação do template da API.
-- [ ] Criação das Models.
-- [ ] Criação do Contexto das Models.
-- [ ] Criação e Execução das migrações.
-- [ ] Criação dos diretórios Infra/Repositories.
-- [ ] Criação dos diretórios Application/Services.
-- [ ] Implementação da lógica da aplicação.
+- [x] Criação do template da API.
+- [X] Criação das Models.
+- [X] Criação do Contexto das Models.
+- [X] Criação dos diretórios Infra/Repositories.
+- [X] Criação dos diretórios Application/Services.
+- [X] Implementação da lógica da aplicação.
   
 #### Funcionamento da aplicação:
 
@@ -28,14 +47,14 @@ public class Colaborador
     public int ColaboradorID {get; set;}
     public string Nome {get; set;}
     public string Cpf {get; set;}
-    public int matricula
+    public int matricula {get; set;}
 }
 
 
 public class Empresa
 {
     public int EmpresaID {get; set;}
-    public string Nome{get; set;}
+    public string Nome {get; set;}
 }
 ```
 
