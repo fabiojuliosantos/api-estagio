@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using RHAPi.Domain;
+using RHAPI.Infra.Dto;
 using RHAPI.Service.Interfaces;
+using RHAPI.Utils;
 
 namespace RHAPI.Controller;
 
@@ -23,7 +25,10 @@ public class ColaboradorController : ControllerBase
             var colaboradores = await _service.BucarTodosColaboradores();
             return Ok(colaboradores);
         }
-        catch (Exception) { throw; }
+        catch (Exception ex) 
+        {            
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpGet("buscar-colarborador/{id}")]
@@ -34,18 +39,28 @@ public class ColaboradorController : ControllerBase
             var colaborador = await _service.BucarColaboradorPorId(id);
             return Ok(colaborador);
         }
-        catch (Exception) { throw; }
+        catch (CustomerException ce) 
+        {
+            return NotFound(ce.Message);
+        }
+        catch (Exception ex) 
+        { 
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost("inserir-colaborador")]
-    public async Task<IActionResult> Inserir(Colaborador colaborador)
+    public async Task<IActionResult> Inserir(CreateColaboradorDto colaborador)
     {
         try
         {
             var colaboradorInserido = await _service.InserirColaborador(colaborador);
             return Ok(colaboradorInserido);
         }
-        catch (Exception) { throw; }
+        catch (Exception ex) 
+        {            
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPut("atualiza-colaborador")]
@@ -56,7 +71,10 @@ public class ColaboradorController : ControllerBase
             var colaboradorAtualizado = await _service.AtualizarColaborador(colaborador);
             return Ok(colaboradorAtualizado);
         }
-        catch (Exception) { throw; }
+        catch (Exception ex) 
+        {            
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpDelete("delete/{id}")]
@@ -67,6 +85,9 @@ public class ColaboradorController : ControllerBase
             var colaboradorDeletado = await _service.DeletarColaborador(id);
             return Ok(colaboradorDeletado);
         }
-        catch (Exception) { throw; }
+        catch (Exception ex) 
+        {            
+            return BadRequest(ex.Message);
+        }
     }
 }

@@ -1,6 +1,8 @@
 using RHAPi.Domain;
+using RHAPI.Infra.Dto;
 using RHAPI.Infra.Interfaces;
 using RHAPI.Service.Interfaces;
+using RHAPI.Utils;
 
 namespace RHAPI.Service.Service;
 
@@ -14,7 +16,14 @@ public class ColaboradorService : IColaboradorService
     }
     public async Task<Colaborador> BucarColaboradorPorId(int id)
     {
-        return await _repository.BuscarPorId(id);
+        Colaborador colaborador = await _repository.BuscarPorId(id);
+
+        if (colaborador is null) 
+        {
+            throw new CustomerException("Colaborador não encontrado", 404);
+        }
+
+        return colaborador;
     }
 
     public async Task<List<Colaborador>> BucarTodosColaboradores()
@@ -22,9 +31,16 @@ public class ColaboradorService : IColaboradorService
         return await _repository.BuscarTodos();
     }
 
-    public Task<bool> InserirColaborador(Colaborador colaborador)
+    public async Task<bool> InserirColaborador(CreateColaboradorDto colaborador)
     {
-        return _repository.Inserir(colaborador);
+        var cpfEhValido = Validator.ValidaCPF(colaborador.Cpf!);
+
+        if (!cpfEhValido)
+        {
+            throw new CustomerException("Cpf está no formato inválido", 400);
+        }
+
+        return await _repository.Inserir(colaborador);
     }
 
     public Task<bool> AtualizarColaborador(Colaborador colaborador)
@@ -32,8 +48,8 @@ public class ColaboradorService : IColaboradorService
         return _repository.Atualizar(colaborador);
     }
 
-    public Task<bool> DeletarColaborador(int id)
+    public async Task<bool> DeletarColaborador(int id)
     {
-        return _repository.Deletar(id);
+        return await  _repository.Deletar(id);
     }
 }

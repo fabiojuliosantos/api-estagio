@@ -1,7 +1,9 @@
 using System.Data;
 using Dapper;
 using RHAPi.Domain;
+using RHAPI.Infra.Dto;
 using RHAPI.Infra.Interfaces;
+using RHAPI.Utils;
 
 namespace RHAPI.Infra.Repositories;
 
@@ -18,9 +20,25 @@ public class ColaboradorRespository : IColaboradorRepository
     {
         try
         {
-            string sql = $"SELECT TOP 1 * FROM COLABORADORES WHERE COLABORADORID = {id}";
-            var colaborador = await _conn.QueryFirstOrDefaultAsync<Colaborador>(sql);
-            return colaborador;
+            string sql = @"
+            SELECT TOP 1 
+                C.*, 
+                E.NOME AS NomeEmpresa 
+            FROM 
+                COLABORADORES C 
+            INNER JOIN 
+                EMPRESAS E ON C.EmpresaID = E.EmpresaID 
+            WHERE 
+                C.ColaboradorID = @ColaboradorId";
+
+            var parametros = new
+            {
+                ColaboradorId = id
+            };
+                
+            var colaborador = await _conn.QueryFirstOrDefaultAsync<Colaborador>(sql, parametros);
+
+            return colaborador!;
         }
         catch (Exception) { throw; }
     }
@@ -29,14 +47,23 @@ public class ColaboradorRespository : IColaboradorRepository
     {
         try 
         {
-            string sql = "SELECT * FROM COLABORADORES";
+            string sql = @"
+            SELECT
+                C.*, 
+                E.NOME AS NomeEmpresa 
+            FROM 
+                COLABORADORES C 
+            INNER JOIN 
+                EMPRESAS E ON C.EmpresaID = E.EmpresaID";
+
             var colaboradores = await _conn.QueryAsync<Colaborador>(sql);
+
             return colaboradores.ToList();
         }
         catch (Exception) { throw; }
     }
 
-    public async Task<bool> Inserir(Colaborador colaborador)
+    public async Task<bool> Inserir(CreateColaboradorDto colaborador)
     {
         try 
         {
