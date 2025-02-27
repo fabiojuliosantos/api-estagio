@@ -14,17 +14,17 @@ public class EmpresaRepository : IEmpresaRepository
         _connection = connection;
     }
 
-
-
     public async Task<Empresa> BuscarEmpresaPorId(int id)
     {
         try
         {
-            string sql = $"SELECT TOP 1 * FROM EMPRESAS WHERE EMPRESAID={id}";
-            var empresas = await _connection.QueryFirstOrDefaultAsync<Empresa>(sql);
-            return empresas;
+            string sql = "SELECT * FROM EMPRESAS WHERE EMPRESAID = @ID";
+            return await _connection.QueryFirstOrDefaultAsync<Empresa>(sql, new { ID = id });
         }
-        catch (Exception) { throw; }
+        catch (Exception ex)
+        {
+            throw new Exception("Erro ao buscar empresa por ID.", ex);
+        }
     }
 
     public async Task<List<Empresa>> BuscarTodasEmpresas()
@@ -33,55 +33,61 @@ public class EmpresaRepository : IEmpresaRepository
         {
             string sql = "SELECT * FROM EMPRESAS";
             var empresas = await _connection.QueryAsync<Empresa>(sql);
-
             return empresas.ToList();
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            throw new Exception("Erro ao buscar todas as empresas.", ex);
+        }
     }
+
     public async Task<bool> InserirEmpresa(Empresa empresa)
     {
         try
-        {     
-            string sql = $"INSERT INTO EMPRESAS VALUES(@EMPRESA)";
-            var parametros = new
-            {
-                EMPRESA = empresa.Nome
-            };
-            var empresaCadastrada = await _connection.ExecuteAsync(sql, parametros);
+        {
+            string sql = @"
+            INSERT INTO EMPRESAS (NOME) 
+            VALUES (@NOME);";
 
-            return empresaCadastrada > 0 ? true : false;
+            var parametros = new { NOME = empresa.Nome };
+
+            var linhasAfetadas = await _connection.ExecuteAsync(sql, parametros);
+            return linhasAfetadas > 0;
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            throw new Exception("Erro ao inserir empresa.", ex);
+        }
     }
+
 
     public async Task<bool> AtualizarEmpresa(Empresa empresa)
     {
         try
         {
-            string sql = "UPDATE EMPRESAS SET NOME=@NOME WHERE EMPRESAID=@ID";
-            var parametros = new
-            {
-                NOME = empresa.Nome,
-                ID = empresa.EmpresaID
-            };
-            var empresaAtualizada = await _connection.ExecuteAsync(sql, parametros);
+            string sql = "UPDATE EMPRESAS SET NOME = @NOME WHERE EMPRESAID = @ID";
+            var parametros = new { NOME = empresa.Nome, ID = empresa.EmpresaID };
 
-            return empresaAtualizada > 0 ? true : false;
+            var linhasAfetadas = await _connection.ExecuteAsync(sql, parametros);
+            return linhasAfetadas > 0;
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            throw new Exception("Erro ao atualizar empresa.", ex);
+        }
     }
 
     public async Task<bool> ExcluirEmpresa(int id)
     {
         try
         {
-            string sql = string.Format("DELETE FROM EMPRESAS WHERE EMPRESAID={0}", id);
-            var empresaExcluida = await _connection.ExecuteAsync(sql);
-            return empresaExcluida > 0 ? true : false;
+            string sql = "DELETE FROM EMPRESAS WHERE EMPRESAID = @ID";
+            var linhasAfetadas = await _connection.ExecuteAsync(sql, new { ID = id });
+            return linhasAfetadas > 0;
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            throw new Exception("Erro ao excluir empresa.", ex);
+        }
     }
-
-
-
 }
