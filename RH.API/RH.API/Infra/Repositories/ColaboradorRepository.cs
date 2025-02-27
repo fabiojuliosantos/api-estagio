@@ -20,7 +20,7 @@ namespace RH.API.Infra.Repositories
             try
             {
 
-                string sql = "UPDATE COLABORAORES SET NOME=@NOME WHERE COLABORADORID=@ID";
+                string sql = "UPDATE COLABORADORES SET NOME=@NOME WHERE COLABORADORID=@ID";
                 var parametros = new
                 {
                     NOME = colaborador.Nome,
@@ -35,32 +35,62 @@ namespace RH.API.Infra.Repositories
             catch (Exception) { throw; }
         }
 
-        public  async Task<Colaborador> BuscarColaboradorId(int id)
+        public async Task<Colaborador> BuscarColaboradorId(int id)
         {
             try
             {
-                string sql = $"SELECT TOP 1 * FROM COLABORAORES WHERE COLABORADORID={id}";
-                var colaboradorId = await _conn.QueryFirstOrDefaultAsync<Colaborador>(sql);
-                return colaboradorId;
+                string sql = @"
+        SELECT c.COLABORADORID, c.NOME, c.CPF, c.MATRICULA, c.EMPRESAID,
+               e.EMPRESAID as EmpresaID, e.NOME as Nome 
+        FROM COLABORADORES c
+        INNER JOIN EMPRESAS e ON c.EMPRESAID = e.EMPRESAID
+        WHERE c.COLABORADORID = @Id";
 
+                var resultado = await _conn.QueryAsync<Colaborador, Empresa, Colaborador>(
+                    sql,
+                    (colaborador, empresa) =>
+                    {
+                        colaborador.Empresa = empresa; 
+                        return colaborador;
+                    },
+                    new { Id = id },
+                    splitOn: "EmpresaID" 
+                );
 
-
+                return resultado.FirstOrDefault(); 
             }
-            catch (Exception) { throw; }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro ao buscar colaborador por ID {id}: {ex.Message}");
+            }
         }
 
         public async Task<List<Colaborador>> BuscarTodosColaborador()
         {
             try
             {
+                string sql = @"
+        SELECT c.COLABORADORID, c.NOME, c.CPF, c.MATRICULA, c.EMPRESAID,
+               e.EMPRESAID as EmpresaID, e.NOME as Nome 
+        FROM COLABORADORES c
+        INNER JOIN EMPRESAS e ON c.EMPRESAID = e.EMPRESAID";
 
-                string sql = $"SELECT * FROM COLABORAORES";
-                var colaboradores = await _conn.QueryAsync<Colaborador>(sql);
+                var colaboradores = await _conn.QueryAsync<Colaborador, Empresa, Colaborador>(
+                    sql,
+                    (colaborador, empresa) =>
+                    {
+                        colaborador.Empresa = empresa;
+                        return colaborador;
+                    },
+                    splitOn: "EmpresaID" 
+                );
+
                 return colaboradores.ToList();
-
-
-
-            }catch (Exception) { throw; }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro ao buscar todos os colaboradores: {ex.Message}");
+            }
         }
 
         public async Task<bool> ExcluirColaborador(int id)
@@ -68,7 +98,7 @@ namespace RH.API.Infra.Repositories
             try
             {
 
-                string sql = string.Format("DELETE FROM COLABORAORES WHERE EMPRESAID={0}", id);
+                string sql = string.Format("DELETE FROM COLABORADORES WHERE COLABORADORID={0}", id);
 
                 var colaboradorExcluida = await _conn.ExecuteAsync(sql);
 
@@ -84,7 +114,7 @@ namespace RH.API.Infra.Repositories
         {
             try
             {
-                string sql = $"INSERT INTO COLABORAORES VALUES(@COLABORADORNOME, @COLABORADORCPF, @COLABORADORMATRICULA,@COLABORADOREMPRESAID)";
+                string sql = $"INSERT INTO COLABORADORES VALUES(@COLABORADORNOME, @COLABORADORCPF, @COLABORADORMATRICULA,@COLABORADOREMPRESAID)";
 
                 //string sql = string.Format("INSERT INTO EMPRESAS VALUES('{0}')", empresa.Nome);
 
@@ -105,5 +135,24 @@ namespace RH.API.Infra.Repositories
             }
             catch (Exception) { throw; }
         }
+        public async Task<Colaborador> BuscarMatricula(int matricula)
+        {
+            try
+            {
+                string sql = $"SELECT  * FROM COLABORADORES WHERE MATRICULA=@Matricula";
+                var matriculaColaborador = await _conn.QueryFirstOrDefaultAsync<Colaborador>(sql, new { Matricula = matricula });
+                return matriculaColaborador;
+
+
+
+            }
+            catch (Exception) { throw; }
+        }
     }
 }
+
+
+
+
+
+

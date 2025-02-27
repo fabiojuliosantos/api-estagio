@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RH.API.Data.Dtos;
 using RH.API.Domain;
 using RH.API.Services.Interface;
 
@@ -44,37 +46,42 @@ public class ColaboradorController : ControllerBase
     }
     [HttpPost("Adicionar")]
 
-    public async Task<IActionResult> Inserir([FromBody] Colaborador colaborador)
+    public async Task<IActionResult> InserirColaborador([FromBody] InserirColaboradorDto colaboradorDto)
     {
         try
         {
-            var colaboradorInserir = await _service.InserirColaborador(colaborador);
-            return Ok(colaboradorInserir);
+            var respostaDTO = await _service.InserirColaborador(colaboradorDto);
 
-
+            return respostaDTO.Sucesso ? Ok(respostaDTO) : BadRequest(respostaDTO);
         }
         catch (Exception) { throw; }
     }
     [HttpPut("Atualizar")]
 
-    public async Task<IActionResult> Atualizar([FromBody] Colaborador colaborador) {
-        try { 
-        var colaboradorAtualizar = await _service.AtualizarColaborador(colaborador);
-        return Ok(colaboradorAtualizar);
-        }catch(Exception ) { throw;  }
+    public async Task<IActionResult> Atualizar([FromBody] AtualizarColaboradorDto colaboradorDto)
+    {
+        try
+        {
+            var respostaDTO = await _service.AtualizarColaborador(colaboradorDto);
+
+            return respostaDTO.Sucesso ? Ok(respostaDTO) : NotFound(respostaDTO);
+
+        }
+        catch (Exception) { throw; }
     }
 
-    [HttpPut("Excluir/{id}")]
+    [HttpDelete("Excluir/{id}")]
     public async Task<IActionResult> Excluir(int id)
     {
         try
         {
-            var colaboradorExcluido = await _service.ExcluirColaborador(id);
-            return Ok(colaboradorExcluido);
-
-
-
-        }catch(Exception) { throw; }
+            var respostaDTO = await _service.ExcluirColaborador(id);
+            return respostaDTO.Sucesso ? Ok(respostaDTO) : BadRequest(respostaDTO);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new RespostaDTO(false, $"Erro interno: {ex.Message}"));
+        }
 
     }
 

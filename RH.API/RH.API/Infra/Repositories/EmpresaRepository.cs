@@ -82,17 +82,23 @@ public class EmpresaRepository : IEmpresaRepository
         catch (Exception) { throw; }
     }
 
-    public async Task<bool> ExcluirEmpresa(int id)
-    {
-        try
+        public async Task<bool> ExcluirEmpresa(int id)
         {
-            string sql = string.Format("DELETE FROM EMPRESAS WHERE EMPRESAID={0}", id);
+            try
+            {
+                string sql = string.Format("DELETE FROM EMPRESAS WHERE EMPRESAID={0}", id);
 
-            var empresaExcluida = await _conn.ExecuteAsync(sql);
+                var empresaExcluida = await _conn.ExecuteAsync(sql);
 
-            return empresaExcluida > 0 ? true : false;
+                return empresaExcluida > 0 ? true : false;
+            }
+            catch (Exception) { throw; }
         }
-        catch (Exception) { throw; }
+
+     public async Task<Empresa> BuscarPorNome(string nome)
+    {
+        string sql = "SELECT * FROM EMPRESAS WHERE Nome = @Nome";
+        return await _conn.QueryFirstOrDefaultAsync<Empresa>(sql, new { Nome = nome });
     }
 
 }

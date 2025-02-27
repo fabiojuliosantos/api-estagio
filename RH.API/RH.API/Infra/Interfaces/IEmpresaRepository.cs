@@ -9,4 +9,6 @@ public interface IEmpresaRepository
     Task<bool> InserirEmpresa(Empresa empresa);
     Task<bool> AtualizarEmpresa(Empresa empresa);
     Task<bool> ExcluirEmpresa(int id);
+
+    Task<Empresa> BuscarPorNome(string nome);
 }

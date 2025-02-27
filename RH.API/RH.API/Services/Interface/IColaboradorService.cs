@@ -1,4 +1,5 @@
-﻿using RH.API.Domain;
+﻿using RH.API.Data.Dtos;
+using RH.API.Domain;
 
 namespace RH.API.Services.Interface
 {
@@ -6,8 +7,8 @@ namespace RH.API.Services.Interface
     {
         Task<List<Colaborador>> BuscarTodosColaborador();
         Task<Colaborador> BuscarColaboradorId(int id);
-        Task<bool> InserirColaborador(Colaborador colaborador);
-        Task<bool> AtualizarColaborador(Colaborador colaborador);
-        Task<bool> ExcluirColaborador(int id);
+        Task<RespostaDTO> InserirColaborador(InserirColaboradorDto colaboradorDto);
+        Task<RespostaDTO> AtualizarColaborador(AtualizarColaboradorDto colaboradorDto);
+        Task<RespostaDTO> ExcluirColaborador(int id);
     }
 }

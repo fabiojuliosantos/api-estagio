@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RH.API.Data.Dtos;
 using RH.API.Domain;
 using RH.API.Services.Interface;
 
@@ -42,29 +43,30 @@ public class EmpresasController : ControllerBase
         }
     } 
     [HttpPost("Inserir")]    
-    public async Task<IActionResult> Inserir([FromBody] Empresa empresa)
+    public async Task<IActionResult> Inserir([FromBody] EmpresaDto empresaDto)
     {
         try
         {
-            var empresas = await _service.InserirEmpresa(empresa);
-            return Ok(empresas);
+            var respostaDTO = await _service.InserirEmpresa(empresaDto);
+            return respostaDTO.Sucesso ? Ok(respostaDTO) : BadRequest(respostaDTO);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw;
+            return StatusCode(500, new RespostaDTO(false, $"Erro interno: {ex.Message}"));
         }
     }
     [HttpPut("Atualizar")]    
-    public async Task<IActionResult> Atualizar([FromBody] Empresa empresa)
+    public async Task<IActionResult> Atualizar( [FromBody] AtualizarEmpresaDto empresaDto)
     {
         try
         {
-            var empresas = await _service.AtualizarEmpresa(empresa);
-            return Ok(empresas);
+            var respostaDTO = await _service.AtualizarEmpresa(empresaDto);
+
+            return respostaDTO.Sucesso ? Ok(respostaDTO) : BadRequest(respostaDTO);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw;
+            return StatusCode(500, new RespostaDTO(false, $"Erro interno: {ex.Message}"));
         }
     }
     [HttpDelete("Excluir/{id}")]    
@@ -72,12 +74,15 @@ public class EmpresasController : ControllerBase
     {
         try
         {
-            var empresas = await _service.ExcluirEmpresa(id);
-            return Ok(empresas);
+            if (id <= 0)
+                return BadRequest(new RespostaDTO(false, "ID inválido"));
+
+            var respostaDTO = await _service.ExcluirEmpresa(id);
+            return respostaDTO.Sucesso ? Ok(respostaDTO) : NotFound(respostaDTO);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw;
+            return StatusCode(500, new RespostaDTO(false, $"Erro interno: {ex.Message}"));
         }
     }
     
