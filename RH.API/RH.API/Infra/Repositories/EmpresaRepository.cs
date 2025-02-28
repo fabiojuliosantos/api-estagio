@@ -28,6 +28,8 @@ public class EmpresaRepository : IEmpresaRepository
         }
     }
 
+    
+
     public async Task<List<Empresa>> BuscarTodasEmpresasAsync()
     {
         try

@@ -14,7 +14,7 @@ public class EmpresasController : ControllerBase
     {
         _service = service;
     }
-
+    
     [HttpGet("buscar-todas")]
     public async Task<IActionResult> BuscarTodas()
     {

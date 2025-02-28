@@ -37,6 +37,8 @@ public class EmpresaService : IEmpresaService
         }
     }
 
+   
+
     public async Task<List<Empresa>> BuscarTodasEmpresasAsync()
     {
         try

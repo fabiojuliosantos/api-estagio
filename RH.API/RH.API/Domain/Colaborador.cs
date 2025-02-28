@@ -7,4 +7,5 @@ public class Colaborador
     public string Cpf { get; set; }
     public int Matricula { get; set; }
     public int EmpresaID { get; set; }
+    public string NomeEmpresa { get; set; }
 }

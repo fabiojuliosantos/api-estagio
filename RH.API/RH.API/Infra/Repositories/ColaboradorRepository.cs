@@ -59,10 +59,11 @@ public class ColaboradorRepository : IColaboradorRepository
     {
         try
         {
-            string sql = string.Format("SELECT * FROM COLABORADORES");
+            string sql = "SELECT C.*, E.EMPRESAID AS NOMEEMPRESA FROM COLABORADORES C INNER JOIN EMPRESAS E ON C.EMPRESAID = E.EMPRESAID";
 
             var colaboradores = await _conn.QueryAsync<Colaborador>(sql);
 
+       
             return colaboradores.ToList();
         }
         catch (Exception)
