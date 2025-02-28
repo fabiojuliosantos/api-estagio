@@ -86,7 +86,7 @@ public class EmpresaRepository : IEmpresaRepository
     {
         try
         {
-            string sql = string.Format("DELETE FROM EMPRESAS WHERE EMPRESAID={0}", id);
+            string sql = string.Format($"DELETE FROM EMPRESAS WHERE EMPRESAID={0}", id);
 
             var empresaExcluida = await _conn.ExecuteAsync(sql);
 
@@ -95,4 +95,34 @@ public class EmpresaRepository : IEmpresaRepository
         catch (Exception) { throw; }
     }
 
+    public async Task<RetornoPaginadoEmpresa<Empresa>> BuscarEmpresasPorPaginaAsync(int pagina, int quantidade)
+    {
+        try
+        {
+            string sql = "SELECT * FROM EMPRESAS ORDER BY EMPRESAID OFFSET @OFFSET ROWS FETCH NEXT @QUANTIDADE ROWS ONLY";
+
+            var parametros = new
+            {
+                OFFSET = (pagina - 1) * quantidade,
+                QUANTIDADE = quantidade
+            };
+
+            var empresas  = await _conn.QueryAsync<Empresa>(sql, parametros);
+
+            string quantidadeEmpresaSql = "SELECT COUNT(*) FROM EMPRESAS";
+
+            var qtdDeEmpresas = await _conn.QueryFirstOrDefaultAsync<int>(quantidadeEmpresaSql);
+
+            return new RetornoPaginadoEmpresa<Empresa>
+            {
+                Pagina = pagina,
+                QtdPagina = quantidade,
+                TotalRegistros = qtdDeEmpresas,
+                Empresas = empresas.ToList()
+            };
+
+        }
+        catch (Exception) 
+        { throw; }
+    }
 }

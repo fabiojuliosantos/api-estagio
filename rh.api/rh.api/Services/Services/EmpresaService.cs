@@ -13,6 +13,18 @@ public class EmpresaService : IEmpresaService
         _repository = repository;
     }
 
+
+    public async Task<RetornoPaginadoEmpresa<Empresa>> BuscarEmpresasPorPaginaAsync(int pagina, int quantidade) 
+    {
+        try
+        {
+            return await _repository.BuscarEmpresasPorPaginaAsync(pagina, quantidade);
+        }
+        catch (Exception)
+        {
+            throw;
+        };
+    }
     public async Task<bool> AtualizarEmpresa(Empresa empresa)
     {
         try 
@@ -36,6 +48,8 @@ public class EmpresaService : IEmpresaService
             throw; 
         }
     }
+
+   
 
     public async Task<List<Empresa>> BuscarTodasEmpresasAsync()
     {

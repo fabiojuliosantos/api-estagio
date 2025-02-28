@@ -15,13 +15,47 @@ public class EmpresasController : ControllerBase
         _service = service;
     }
 
+    [HttpGet("buscar-paginado/{pagina}/{quantidade}")]
+
+
+    public async Task<IActionResult> BuscarEmpresasPorPaginaAsync(int pagina, int quantidade)
+    {
+        try
+        {
+            var empresas = await _service.BuscarEmpresasPorPaginaAsync(pagina, quantidade);
+           
+            if (empresas == null)
+            {
+                return NotFound("Nenhuma empresa  localizada em nossa base de dados!");
+            }
+
+            else
+            {
+                return Ok(empresas);
+            };
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+
     [HttpGet("buscar-todas")]
     public async Task<IActionResult> BuscarTodas()
     {
         try
         {
             var empresas = await _service.BuscarTodasEmpresasAsync();
-            return Ok(empresas);
+            if (empresas == null || !empresas.Any())
+            {
+                return NotFound("Nenhuma empresa não localizada!");
+            }
+
+            else 
+            {
+                return Ok(empresas);
+            };
         }
         catch (Exception)
         {
@@ -34,7 +68,16 @@ public class EmpresasController : ControllerBase
         try
         {
             var empresas = await _service.BuscarEmpresaPorId(id);
-            return Ok(empresas);
+
+            if(empresas == null)
+            {
+                return NotFound($"Nenhuma empresa localizada com o id{id}.");
+            }
+            else 
+            { 
+                return Ok(empresas);
+            }
+            
         }
         catch (Exception)
         {

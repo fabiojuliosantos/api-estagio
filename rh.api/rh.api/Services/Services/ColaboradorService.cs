@@ -74,5 +74,18 @@ namespace rh.api.Services.Services
                 throw;
             }
         }
+
+        public async Task<RetornoPaginadoColaborador<Colaborador>> BuscarColaboradoresPorPaginaAsync(int pagina, int quantidade)
+        {
+            try
+            {
+                return await _repository.BuscarColaboradoresPorPagina(pagina, quantidade);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro ao buscar colaboradores paginados: {ex.Message}", ex);
+            }
+
+        }
     }
 }

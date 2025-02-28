@@ -16,14 +16,33 @@ namespace rh.api.Controllers
             _service = service;
         }
 
+        [HttpGet("buscar-paginado/{pagina}/{quantidade}")]
+        public async Task<IActionResult> BuscarColaboradoresPorPaginaAsync(int pagina, int quantidade)
+        {
+            try
+            {
+                var colaboradores = await _service.BuscarColaboradoresPorPaginaAsync(pagina, quantidade);
 
-        [HttpGet("buscar-todas")]
+                if (colaboradores == null ) 
+                {
+                    return NotFound("Nenhum colaborador localizado em nossa base de dados!");
+                }
+
+                return Ok(colaboradores);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro interno: {ex.Message}");
+            }
+        }
+
+        [HttpGet("buscar-todos")]
         public async Task<IActionResult> BuscarTodas()
         {
             try
             {
-                var empresas = await _service.BuscarTodosColaboradoresAsync();
-                return Ok(empresas);
+                var colaboradores = await _service.BuscarTodosColaboradoresAsync();
+                return Ok(colaboradores);
             }
             catch (Exception)
             {
@@ -35,8 +54,8 @@ namespace rh.api.Controllers
         {
             try
             {
-                var empresas = await _service.BuscarColaboradorPorId(id);
-                return Ok(empresas);
+                var colaboradores = await _service.BuscarColaboradorPorId(id);
+                return Ok(colaboradores);
             }
             catch (Exception)
             {
