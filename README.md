@@ -9,7 +9,7 @@
 - [X] Ao realizar o cadastro, deleção ou atualização de um item (colaborador/empresa), retornar a mensagem de sucesso ou erro da operação.
 - [X] Caso os itens buscados por id não houverem retorno (null) retornar o código 404 NotFound na Controller.
 - [ ] Realizar a busca paginando os resultados de acordo com a quantidade de itens, e a página que o usuário solicita.
-
+- [ ] Realizar a validação para caso o array com os itens esteja em branco, retornar uma mensagem dizendo que não foram encontrados registros para aquela página
 
 
 #### Colaborador:
@@ -61,11 +61,11 @@ public class Empresa
 
 > A aplicação deve realizar o CRUD das duas classes, incluindo novos colaboradores e novas empresas. As rotas precisam ser:
 
-- [ ] Inserção de dados (colaborador/empresa).
-- [ ] Busca de todos os itens (colaborador/empresa).
-- [ ] Busca por Id (colaborador/empresa).
-- [ ] Deleção por Id (colaborador/empresa).
-- [ ] Atualizar por Id (colaborador/empresa).
+- [X] Inserção de dados (colaborador/empresa).
+- [X] Busca de todos os itens (colaborador/empresa).
+- [X] Busca por Id (colaborador/empresa).
+- [X] Deleção por Id (colaborador/empresa).
+- [X] Atualizar por Id (colaborador/empresa).
 
 > Obs: Utilize os verbos HTTP correspondentes para cada implementação nas rotas, para que seja condizente o que está sendo processado na aplicação, e o que a rota indica.
 
