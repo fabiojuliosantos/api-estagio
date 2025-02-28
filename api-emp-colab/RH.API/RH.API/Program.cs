@@ -21,6 +21,18 @@ builder.Services.AddScoped<IDbConnection>(provider =>
 });
 
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionString));
+
+// Configuração do CORS para permitir que o frontend se conecte ao backend
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", policy =>
+    {
+        policy.AllowAnyOrigin() // Permite todas as origens (pode restringir se necessário)
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 #region Servico
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
 builder.Services.AddScoped<IColaboradorService, ColaboradoresService>();
@@ -29,10 +41,11 @@ builder.Services.AddScoped<IColaboradorService, ColaboradoresService>();
 builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
 builder.Services.AddScoped<IColaboradoresRepository, ColaboradoresRepository>();
 #endregion
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Para Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -46,6 +59,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Habilitando CORS para permitir comunicação com o frontend
+app.UseCors("AllowAllOrigins");
 
 app.UseAuthorization();
 
