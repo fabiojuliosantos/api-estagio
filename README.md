@@ -6,17 +6,18 @@
 > As Seguintes tarefas devem ser realizadas para finalização do projeto:
 
 #### Geral:
-- [ ] Ao realizar o cadastro, deleção ou atualização de um item (colaborador/empresa), retornar a mensagem de sucesso ou erro da operação.
-- [ ] Caso os itens buscados por id não houverem retorno (null) retornar o código 404 NotFound na Controller.
+- [X] Ao realizar o cadastro, deleção ou atualização de um item (colaborador/empresa), retornar a mensagem de sucesso ou erro da operação.
+- [X] Caso os itens buscados por id não houverem retorno (null) retornar o código 404 NotFound na Controller.
+- [ ] Realizar a busca paginando os resultados de acordo com a quantidade de itens, e a página que o usuário solicita.
 
 
 
 #### Colaborador:
-- [ ] Implementar a lógica de CRUD para a classe de Colaborador .
-- [ ] Realizar a validação dos dados de entrada do Colaborador.
-- [ ] Criar DTO para receber no processo de cadastro do colaborador, todos os dados do mesmo EXCETO o ColaboradorID que é autoincrementado.
-- [ ] Realizar a validação de CPF do colaborador.
-- [ ] Quando a busca do colaborador for realizada, retornar a empresa a qual ele está atrelado. Seja a busca de todas as empresas, ou a busca por ID (Faça as devidas alterações para tal).
+- [X] Implementar a lógica de CRUD para a classe de Colaborador .
+- [X] Realizar a validação dos dados de entrada do Colaborador.
+- [X] Criar DTO para receber no processo de cadastro do colaborador, todos os dados do mesmo EXCETO o ColaboradorID que é autoincrementado.
+- [X] Realizar a validação de CPF do colaborador.
+- [X] Quando a busca do colaborador for realizada, retornar a empresa a qual ele está atrelado. Seja a busca de todas as empresas, ou a busca por ID (Faça as devidas alterações para tal).
 
 
 
