@@ -14,6 +14,7 @@ public class EmpresaRepository : IEmpresaRepository
         _conn = conn;
     }
 
+    #region Buscar Empresa por Id
     public async Task<Empresa> BuscarEmpresaPorId(int id)
     {
         try
@@ -27,7 +28,9 @@ public class EmpresaRepository : IEmpresaRepository
             throw;
         }
     }
+    #endregion
 
+    #region Buscar Todas as empresas
     public async Task<List<Empresa>> BuscarTodasEmpresas()
     {
         try
@@ -41,7 +44,9 @@ public class EmpresaRepository : IEmpresaRepository
             throw;
         }
     }
+    #endregion
 
+    #region Inserir Empresas
     public async Task<bool> InserirEmpresa(Empresa empresa)
     {
         try
@@ -64,6 +69,9 @@ public class EmpresaRepository : IEmpresaRepository
             throw;
         }
     }
+    #endregion
+
+    #region Atualizar Empresa
 
     public async Task<bool> AtualizarEmpresa(Empresa empresa)
     {
@@ -81,24 +89,73 @@ public class EmpresaRepository : IEmpresaRepository
         }
         catch (Exception) { throw; }
     }
+    #endregion
 
-        public async Task<bool> ExcluirEmpresa(int id)
+    #region Excluir empresa
+    public async Task<bool> ExcluirEmpresa(int id)
+    {
+        try
         {
-            try
-            {
-                string sql = string.Format("DELETE FROM EMPRESAS WHERE EMPRESAID={0}", id);
+            string sql = string.Format("DELETE FROM EMPRESAS WHERE EMPRESAID={0}", id);
 
-                var empresaExcluida = await _conn.ExecuteAsync(sql);
+            var empresaExcluida = await _conn.ExecuteAsync(sql);
 
-                return empresaExcluida > 0 ? true : false;
-            }
-            catch (Exception) { throw; }
+            return empresaExcluida > 0 ? true : false;
         }
+        catch (Exception) { throw; }
+    }
 
-     public async Task<Empresa> BuscarPorNome(string nome)
+    #endregion
+
+
+    #region Buscar por nome
+    public async Task<Empresa> BuscarPorNome(string nome)
     {
         string sql = "SELECT * FROM EMPRESAS WHERE Nome = @Nome";
         return await _conn.QueryFirstOrDefaultAsync<Empresa>(sql, new { Nome = nome });
     }
+    #endregion
 
+
+    #region Buscar empresa por pagina
+    public async Task<RetornoPaginado<Empresa>> BuscarEmpresaPorPaginaAsync(int pagina, int quantidade)
+    {
+        try
+        {
+            string sql = "SELECT * FROM EMPRESAS ORDER BY EMPRESAID OFFSET @OFFSET ROWS FETCH NEXT @QUANTIDADE ROWS ONLY ";
+
+            var parametros = new
+            {
+                OFFSET = (pagina - 1) * quantidade,
+
+                QUANTIDADE = quantidade
+
+            };
+
+            var empresas = await _conn.QueryAsync<Empresa>(sql, parametros);
+
+            var totalEmpresas = "Select count(*) from empresas";
+
+            var retornoTotalEmpresas = await _conn.ExecuteScalarAsync<int>(totalEmpresas);
+
+            return new RetornoPaginado<Empresa>()
+            {
+                Pagina = pagina,
+                QtdPagina = quantidade,
+                TotalRegistros = retornoTotalEmpresas,
+                Empresas = empresas.ToList()
+
+            };
+
+          
+
+
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+    #endregion
 }

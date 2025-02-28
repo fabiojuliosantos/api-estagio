@@ -19,19 +19,19 @@ public class EmpresaService : IEmpresaService
     {
         try
         {
-            // 🔹 Validação inicial
+           
             if (empresaDto.EmpresaId <= 0)
                 return new RespostaDTO(false, "ID inválido");
 
             if (string.IsNullOrWhiteSpace(empresaDto.Nome))
                 return new RespostaDTO(false, "O nome da empresa é obrigatório");
 
-            // 🔹 Buscar empresa no banco
+          
             var empresaExistente = await _repository.BuscarEmpresaPorId(empresaDto.EmpresaId);
             if (empresaExistente == null)
                 return new RespostaDTO(false, "Empresa não encontrada");
 
-            // 🔹 Atualizar os dados da empresa
+           
             empresaExistente.Nome = empresaDto.Nome;
 
             bool resultado = await _repository.AtualizarEmpresa(empresaExistente);
@@ -58,6 +58,25 @@ public class EmpresaService : IEmpresaService
         catch (Exception) 
         {
             throw; 
+        }
+    }
+    #endregion 
+
+    #region Buscar Empresa por Pagina
+    public async Task<RetornoPaginado<Empresa>> BuscarEmpresaPorPagina(int pagina, int quantidade)
+    {
+        try
+        {
+          
+            return await _repository.BuscarEmpresaPorPaginaAsync(pagina, quantidade);
+
+            
+
+        }
+        catch (Exception)
+        {
+
+            throw;
         }
     }
     #endregion
@@ -112,18 +131,18 @@ public class EmpresaService : IEmpresaService
             if (string.IsNullOrWhiteSpace(empresaDto.Nome))
                 return new RespostaDTO(false, "O nome da empresa é obrigatório");
 
-            // Verificar se já existe uma empresa com o mesmo nome
+          
             var empresaExistente = await _repository.BuscarPorNome(empresaDto.Nome);
             if (empresaExistente != null)
                 return new RespostaDTO(false, "Já existe uma empresa com este nome");
 
-            // Criar entidade Empresa
+          
             var empresa = new Empresa
             {
                 Nome = empresaDto.Nome
             };
 
-            // Inserir no banco
+         
             bool resultado = await _repository.InserirEmpresa(empresa);
 
             if (!resultado)
