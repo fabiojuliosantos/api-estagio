@@ -1,4 +1,5 @@
 ﻿using RH.API.Domain;
+using RH.API.Dto;
 
 namespace RH.API.Infra.Interfaces;
 

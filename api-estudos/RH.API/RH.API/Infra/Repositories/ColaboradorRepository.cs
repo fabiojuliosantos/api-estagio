@@ -20,36 +20,51 @@ public class ColaboradorRepository : IColaboradorRepository
     {
         try
         {
-            string sql = $"SELECT TOP 1 * FROM COLABORADORES WHERE COLABORADORID={id}";
-            var colaboradores = await _connection.QueryFirstOrDefaultAsync<Colaborador>(sql);
-            return colaboradores;
+            string sql = @"SELECT c.ColaboradorID, c.Nome, c.Cpf, c.Matricula, c.EmpresaID, e.Nome AS EmpresaNome
+                       FROM COLABORADORES c
+                       LEFT JOIN EMPRESAS e ON c.EmpresaID = e.EmpresaID
+                       WHERE c.ColaboradorID = @Id";
+
+            var colaborador = await _connection.QueryFirstOrDefaultAsync<Colaborador>(sql, new { Id = id });
+            return colaborador;
         }
-        catch (Exception) { throw; }
+        catch (Exception)
+        {
+            throw;
+        }
     }
+
 
     public async Task<List<Colaborador>> BuscarTodosColaboradores()
     {
         try
         {
-            string sql = "SELECT * FROM COLABORADORES";
-            var colaboradores = await _connection.QueryAsync<Colaborador>(sql);
+            string sql = @"SELECT c.ColaboradorID, c.Nome, c.Cpf, c.Matricula, c.EmpresaID, e.Nome AS EmpresaNome
+                       FROM COLABORADORES c
+                       LEFT JOIN EMPRESAS e ON c.EmpresaID = e.EmpresaID";
 
+            var colaboradores = await _connection.QueryAsync<Colaborador>(sql);
             return colaboradores.ToList();
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
+
     public async Task<bool> InserirColaborador(Colaborador colaborador)
     {
         try
         {
-            string sql = @"INSERT INTO COLABORADORES (Nome, Cpf, Matricula) 
-                       VALUES (@Nome, @Cpf, @Matricula)";
+            string sql = @"INSERT INTO COLABORADORES (Nome, Cpf, Matricula, EmpresaID) 
+                       VALUES (@Nome, @Cpf, @Matricula, @EmpresaID)";
 
             var parametros = new
             {
                 Nome = colaborador.Nome,
                 Cpf = colaborador.Cpf,
-                Matricula = colaborador.Matricula
+                Matricula = colaborador.Matricula,
+                EmpresaID = colaborador.EmpresaID
             };
 
             var colaboradorCadastrado = await _connection.ExecuteAsync(sql, parametros);
@@ -58,9 +73,10 @@ public class ColaboradorRepository : IColaboradorRepository
         }
         catch (Exception ex)
         {
-            throw; 
+            throw;
         }
     }
+
 
 
     public async Task<bool> AtualizarColaborador(Colaborador colaborador)
@@ -70,7 +86,8 @@ public class ColaboradorRepository : IColaboradorRepository
             string sql = @"UPDATE COLABORADORES 
                        SET Nome = @Nome, 
                            Cpf = @Cpf, 
-                           Matricula = @Matricula 
+                           Matricula = @Matricula, 
+                           EmpresaID = @EmpresaID
                        WHERE ColaboradorID = @ColaboradorID";
 
             var parametros = new
@@ -78,7 +95,7 @@ public class ColaboradorRepository : IColaboradorRepository
                 Nome = colaborador.Nome,
                 Cpf = colaborador.Cpf,
                 Matricula = colaborador.Matricula,
-                ColaboradorID = colaborador.ColaboradorID
+                EmpresaID = colaborador.EmpresaID,
             };
 
             var linhasAfetadas = await _connection.ExecuteAsync(sql, parametros);
@@ -90,6 +107,7 @@ public class ColaboradorRepository : IColaboradorRepository
             throw;
         }
     }
+
 
 
     public async Task<bool> ExcluirColaborador(int colaboradorID)
@@ -106,7 +124,7 @@ public class ColaboradorRepository : IColaboradorRepository
         }
         catch (Exception ex)
         {
-            throw; 
+            throw;
         }
     }
 

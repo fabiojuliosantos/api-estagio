@@ -66,6 +66,8 @@ namespace RH.API.Services.Services
                 soma += int.Parse(numeros[i].ToString()) * peso--;
             }
 
+            soma += digito1 * peso--;
+
             resto = soma % 11;
             int digito2 = resto < 2 ? 0 : 11 - resto;
 
