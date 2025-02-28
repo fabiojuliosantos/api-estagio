@@ -52,7 +52,12 @@ public class ColaboradorRepository : IColaboradorRepository
 
         try
         {
-            string sql = @"SELECT * FROM COLABORADORES ORDER BY COLABORADORID OFFSET @OFFSET ROWS FETCH NEXT @FETCHNEXT ROWS ONLY";
+            string sql = @"SELECT C.*,E.NOME AS NomeDaEmpresa
+            FROM COLABORADORES C
+            INNER JOIN EMPRESAS E
+            ON C.EMPRESAID = E.EMPRESAID
+            ORDER BY COLABORADORID
+            OFFSET @OFFSET ROWS FETCH NEXT @FETCHNEXT ROWS ONLY";
             var parametros = new
             {
                 OFFSET = (pagina - 1) * quantidade,
