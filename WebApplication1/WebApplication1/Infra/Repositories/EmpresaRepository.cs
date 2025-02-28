@@ -80,4 +80,32 @@ public class EmpresaRepository : IEmpresaRepository
         }
         catch (Exception ex) { throw; }
     }
+
+    public async Task<RetornoEmpresaPaginado<Empresa>> BuscarEmpresasPorPagina(int pagina, int quantidade)
+    {
+        try 
+        {
+            string sql = @"SELECT * FROM EMPRESAS ORDER BY EMPRESAID OFFSET @OFFSET ROWS FETCH NEXT @FETCHNEXT ROWS ONLY";
+            var parametros = new
+            {
+                OFFSET = (pagina - 1) * quantidade,
+                FETCHNEXT = quantidade
+            };
+
+            var empresa = await _conn.QueryAsync<Empresa>(sql, parametros);
+
+            string sqlQuantidadeEmpresa = "SELECT COUNT(*) FROM EMPRESAS";
+
+            var quantidadeDeEmpresas = await _conn.QueryFirstOrDefaultAsync<int>(sqlQuantidadeEmpresa);
+
+            return new RetornoEmpresaPaginado<Empresa>
+            {
+                Pagina = pagina,
+                QtdPagina = quantidade,
+                TotalRegistros = quantidadeDeEmpresas,
+                Empresas = empresa.ToList()
+            };
+        }
+        catch (Exception ex) { throw; }
+    }
 }

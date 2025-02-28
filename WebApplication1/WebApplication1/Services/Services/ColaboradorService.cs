@@ -31,6 +31,18 @@ public class ColaboradorService : IColaboradorService
         catch (Exception e) { throw; }
     }
 
+    public async Task<RetornoColaboradorPaginado<Colaborador>> BuscarColaboradorPorPaginaAsync(int pagina, int quantidade)
+    {
+        try
+        {
+            return await _repository.BuscarColaboradoresPorPagina(pagina, quantidade);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
     public async Task<List<Colaborador>> BuscarTodosColaboradoresAsync()
     {
         try

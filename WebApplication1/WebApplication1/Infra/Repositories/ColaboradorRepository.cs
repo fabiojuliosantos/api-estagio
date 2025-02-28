@@ -47,6 +47,37 @@ public class ColaboradorRepository : IColaboradorRepository
         catch (Exception e) { throw; }
     }
 
+    public async Task<RetornoColaboradorPaginado<Colaborador>> BuscarColaboradoresPorPagina(int pagina, int quantidade)
+    {
+
+        try
+        {
+            string sql = @"SELECT * FROM COLABORADORES ORDER BY COLABORADORID OFFSET @OFFSET ROWS FETCH NEXT @FETCHNEXT ROWS ONLY";
+            var parametros = new
+            {
+                OFFSET = (pagina - 1) * quantidade,
+                FETCHNEXT = quantidade
+            };
+            var empresas = await _conn.QueryAsync<Colaborador>(sql, parametros);
+
+            string sqlQuantidadeColaboradores = "SELECT COUNT(*) FROM COLABORADORES";
+
+            var quantidadeColaboradores = await _conn.QueryFirstOrDefaultAsync<int>(sqlQuantidadeColaboradores);
+
+            return new RetornoColaboradorPaginado<Colaborador>
+            {
+                Pagina = pagina,
+                QtdPagina = quantidade,
+                TotalRegistros = quantidadeColaboradores,
+                Colaboradores = empresas.ToList()
+            };
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
     public async Task<List<Colaborador>> BuscarTodosColaboradores()
     {
         try
