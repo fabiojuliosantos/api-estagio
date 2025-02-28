@@ -1,10 +1,10 @@
 ﻿using System.Data;
-using Dapper;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using RH.API.Domain;
 using RH.API.Infra.Interfaces;
+using RH.API.Infra.Repositories;
 using RH.API.Services.Interface;
 using RH.API.Validacao;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace RH.API.Services.Services;
 
@@ -13,7 +13,7 @@ public class ColaboradorService : IColaboradorService
     private readonly IColaboradorRepository _repository;
     private readonly IDbConnection _connection;
 
-    public ColaboradorService(IColaboradorRepository repository, IDB)
+    public ColaboradorService(IColaboradorRepository repository, IDbConnection connection)
     {
         _repository = repository;
         _connection = connection;
@@ -32,18 +32,7 @@ public class ColaboradorService : IColaboradorService
     {
         try
         {
-            Validacoes validacao = new();
-
-            var totalColaboradores = "SELECT COUNT(*) FROM COLABORADORES";
-            var retornoTotalColaboradores = await _connection.ExecuteScalarAsync<int>(totalColaboradores);
-
-            bool validacaoPagina = validacao.VerificaPaginaEmBranco(pagina, quantidade, retornoTotalColaboradores);
-
-            // Fazer sem retornar 500
-            if (validacaoPagina)
-                return await _repository.BuscarColaboradoresPorPagina(pagina, quantidade);
-            else
-                throw new Exception("A página solicitada não possui registros!");
+            return  await _repository.BuscarColaboradoresPorPagina(pagina, quantidade);
         }
         catch (Exception ex) { throw; }
     }
@@ -79,10 +68,10 @@ public class ColaboradorService : IColaboradorService
     {
         try
         {
-            Validacoes validacao = new();
+            Validacoes validacao = new(new ColaboradorRepository(_connection));
             // Fazer validação para o cpf do colaborador
 
-            bool validacaoCpf = validacao.ValidaCpf(colaborador.Cpf);
+            bool validacaoCpf = await validacao.ValidaCpf(colaborador.Cpf);
 
             if (validacaoCpf)
                 return await _repository.InserirColaborador(colaborador);

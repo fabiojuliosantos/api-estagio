@@ -6,4 +6,5 @@ public class RetornoPaginadoCol<Colaborador>
     public int Pagina { get; set; }
     public int QtdPagina { get; set; }
     public List<Colaborador> Colaboradores { get; set; }
+    public string Mensagem { get; set; }
 }

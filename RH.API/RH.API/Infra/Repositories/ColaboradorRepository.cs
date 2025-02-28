@@ -2,6 +2,7 @@
 using Dapper;
 using RH.API.Domain;
 using RH.API.Infra.Interfaces;
+using RH.API.Validacao;
 
 namespace RH.API.Infra.Repositories;
 
@@ -39,6 +40,8 @@ public class ColaboradorRepository : IColaboradorRepository
     {
         try
         {
+            Validacoes validacao = new(new ColaboradorRepository(_connection));
+
             string sql = "SELECT C.*, E.NOME AS NOMEEMPRESA FROM COLABORADORES C INNER JOIN EMPRESAS E ON E.EMPRESAID = C.EMPRESAID ORDER BY COLABORADORID OFFSET @OFFSET ROWS FETCH NEXT @QUANTIDADE ROWS ONLY";
 
             var parametros = new
@@ -53,13 +56,29 @@ public class ColaboradorRepository : IColaboradorRepository
 
             var retornoTotalColaboradores = await _connection.ExecuteScalarAsync<int>(totalColaboradores);
 
-            return new RetornoPaginadoCol<Colaborador>()
+            if (validacao.VerificaPaginaVazia(pagina, quantidade, retornoTotalColaboradores))
             {
-                Pagina = pagina,
-                QtdPagina = quantidade,
-                TotalRegistros = retornoTotalColaboradores,
-                Colaboradores = colaboradores.ToList()
-            };
+                return new RetornoPaginadoCol<Colaborador>()
+                {
+                    Pagina = pagina,
+                    QtdPagina = quantidade,
+                    TotalRegistros = retornoTotalColaboradores,
+                    Colaboradores = colaboradores.ToList(),
+                    Mensagem = "Não foram encontrados registros nesta página!"
+                };
+
+            }
+            else
+            {
+                return new RetornoPaginadoCol<Colaborador>()
+                {
+                    Pagina = pagina,
+                    QtdPagina = quantidade,
+                    TotalRegistros = retornoTotalColaboradores,
+                    Colaboradores = colaboradores.ToList(),
+                    Mensagem = $"Foram encontrados {colaboradores.Count()} colaboradores nesta página!"
+                };
+            }
         }
         catch (Exception ex) { throw; }
     }
@@ -87,6 +106,21 @@ public class ColaboradorRepository : IColaboradorRepository
             return colaboradores.ToList(); // Retornando o resultado como uma lista
         }
         catch (Exception ex) { throw; }
+    }
+
+    public async Task<bool> CpfExistenteAsync(string cpf)
+    {
+        string sql = "SELECT COUNT(*) FROM COLABORADORES WHERE CPF = @CPF";
+
+        var parametro = new
+        {
+            CPF = cpf
+        };
+
+        int verificacaoCPF = await _connection.ExecuteScalarAsync<int>(sql, parametro);
+
+        return verificacaoCPF > 0;
+
     }
 
     public async Task<bool> ExcluirColaborador(int id)

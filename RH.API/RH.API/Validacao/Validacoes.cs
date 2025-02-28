@@ -1,7 +1,19 @@
-﻿namespace RH.API.Validacao;
+﻿using RH.API.Domain;
+using RH.API.Infra.Interfaces;
+
+namespace RH.API.Validacao;
 
 public class Validacoes
 {
+    private readonly IColaboradorRepository _repository;
+
+
+
+    public Validacoes(IColaboradorRepository repository)
+    {
+        _repository = repository;
+    }
+
     #region Validações CPF
     // VERIFICA SE TODOS OS DIGITOS SÂO IGUAIS
     public bool VerificaDigitosIguais(string cpf)
@@ -35,42 +47,63 @@ public class Validacoes
     }
 
     // Validação do CPF
-    public bool ValidaCpf(string cpf)
+    public async Task<bool> ValidaCpf(string cpf)
     {
-        bool verificacaoDigitosIguais = VerificaDigitosIguais(cpf);
-
-        if (!verificacaoDigitosIguais)
+        try
         {
-            int[] digitos = new int[11];
-            for (int i = 0; i < 11; i++)
-            {
-                digitos[i] = int.Parse(cpf[i].ToString());
+            if (await VerificaCpfIgualAsync(cpf)) 
+                {
+                throw new Exception("O CPF inserido já existe na base de dados!");
             }
+            else {
+                bool verificacaoDigitosIguais = VerificaDigitosIguais(cpf);
 
-            int primeiroDigitoVerificador = CalculaDigitoVerificador(digitos, 10);
+                if (!verificacaoDigitosIguais)
+                {
+                    int[] digitos = new int[11];
+                    for (int i = 0; i < 11; i++)
+                    {
+                        digitos[i] = int.Parse(cpf[i].ToString());
+                    }
 
-            int segundoDigitoVerificador = CalculaDigitoVerificador(digitos, 11);
+                    int primeiroDigitoVerificador = CalculaDigitoVerificador(digitos, 10);
 
-            // Verifica se os dígitos verificadores estão corretos
-            if (digitos[9] == primeiroDigitoVerificador && digitos[10] == segundoDigitoVerificador)
-                return true;
-            else
-                return false;
+                    int segundoDigitoVerificador = CalculaDigitoVerificador(digitos, 11);
+
+                    // Verifica se os dígitos verificadores estão corretos
+                    if (digitos[9] == primeiroDigitoVerificador && digitos[10] == segundoDigitoVerificador)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                {
+                    throw new Exception("CPF inválido. Digitos iguais!");
+                }
+            }
+           
         }
-        else
-        {
-            throw new Exception("CPF inválido. Digitos iguais!");
-        }
+        catch (Exception ex) { throw new Exception(ex.Message); }
+        
     }
 
-    public bool VerificaPaginaEmBranco(int pagina, int quantidade, int totalColaboradores)
+    public async Task<bool> VerificaCpfIgualAsync(string cpf)
+    {
+        if (await _repository.CpfExistenteAsync(cpf)) return true; // Retorna true caso exista um cpf
+        else return false; // Retorna false caso não exista o cpf
+    }
+    #endregion
+
+    #region Validação página vazia
+
+    public bool VerificaPaginaVazia(int pagina, int quantidade, int totalColaboradores)
     {
         int totalPaginas = totalColaboradores / quantidade;
 
         if (pagina > totalPaginas)
-            return false; // Falso para quando a pagina solicitada for maior que o total de paginas (retornaria uma pagina vazia)
+            return true; // Falso para quando a pagina solicitada for maior que o total de paginas (retornaria uma pagina vazia)
         else
-            return true; // Verdadeiro para quando a pagina solicitada estiver dentro do total de paginas
+            return false; // Verdadeiro para quando a pagina solicitada estiver dentro do total de paginas
     }
     #endregion
 }
