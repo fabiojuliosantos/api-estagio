@@ -4,6 +4,7 @@ namespace RH.API.Services.Interface;
 
 public interface IColaboradorService
 {
+    Task<RetornoPaginadoCol<Colaborador>> BuscarColaboradoresPorPaginaAsync(int pagina, int quantidade);
     Task<List<Colaborador>> BuscarTodosColaboradoresAsync();
     Task<Colaborador> BuscarColaboradorPorId(int id);
     Task<bool> InserirColaborador(Colaborador colaborador);

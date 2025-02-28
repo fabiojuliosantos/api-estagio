@@ -16,6 +16,35 @@ public class EmpresaRepository : IEmpresaRepository
         _connection = connection;
     }
 
+    public async Task<RetornoPaginadoEmp<Empresa>> BuscarEmpresasPorPagina(int pagina, int quantidade)
+    {
+        try
+        {
+            string sql = "SELECT * FROM EMPRESAS ORDER BY EMPRESAID OFFSET @OFFSET ROWS FETCH NEXT @QUANTIDADE ROWS ONLY";
+
+            var parametros = new
+            {
+                OFFSET = (pagina - 1) * quantidade,
+                QUANTIDADE = quantidade,
+            };
+
+            var empresas = await _connection.QueryAsync<Empresa>(sql, parametros);
+
+            var totalEmpresas = "SELECT COUNT(*) FROM EMPRESAS";
+
+            var retornoTotalEmpresas = await _connection.ExecuteScalarAsync<int>(totalEmpresas);
+
+            return new RetornoPaginadoEmp<Empresa>()
+            {
+                Pagina = pagina,
+                QtdPagina = quantidade,
+                TotalRegistros = retornoTotalEmpresas,
+                Empresas = empresas.ToList()
+            };
+        }
+        catch (Exception ex) { throw; }
+    }
+
     public async Task<bool> AtualizarEmpresa(Empresa empresa)
     {
         try
@@ -50,7 +79,7 @@ public class EmpresaRepository : IEmpresaRepository
         try
         {
             string sql = "SELECT * FROM EMPRESAS";
-            var empresas = await _connection.QueryAsync<Empresa>(sql); 
+            var empresas = await _connection.QueryAsync<Empresa>(sql);
 
             //await _connection.QueryFirstOrDefaultAsync<Empresa>(sql); // Retorna top 1
 

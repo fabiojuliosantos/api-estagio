@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using System.Data;
+using Dapper;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using RH.API.Domain;
 using RH.API.Infra.Interfaces;
 using RH.API.Services.Interface;
@@ -9,10 +11,12 @@ namespace RH.API.Services.Services;
 public class ColaboradorService : IColaboradorService
 {
     private readonly IColaboradorRepository _repository;
+    private readonly IDbConnection _connection;
 
-    public ColaboradorService(IColaboradorRepository repository)
+    public ColaboradorService(IColaboradorRepository repository, IDB)
     {
         _repository = repository;
+        _connection = connection;
     }
 
     public async Task<bool> AtualizarColaborador(Colaborador colaborador)
@@ -20,6 +24,26 @@ public class ColaboradorService : IColaboradorService
         try
         {
             return await _repository.AtualizarColaborador(colaborador);
+        }
+        catch (Exception ex) { throw; }
+    }
+
+    public async Task<RetornoPaginadoCol<Colaborador>> BuscarColaboradoresPorPaginaAsync(int pagina, int quantidade)
+    {
+        try
+        {
+            Validacoes validacao = new();
+
+            var totalColaboradores = "SELECT COUNT(*) FROM COLABORADORES";
+            var retornoTotalColaboradores = await _connection.ExecuteScalarAsync<int>(totalColaboradores);
+
+            bool validacaoPagina = validacao.VerificaPaginaEmBranco(pagina, quantidade, retornoTotalColaboradores);
+
+            // Fazer sem retornar 500
+            if (validacaoPagina)
+                return await _repository.BuscarColaboradoresPorPagina(pagina, quantidade);
+            else
+                throw new Exception("A página solicitada não possui registros!");
         }
         catch (Exception ex) { throw; }
     }

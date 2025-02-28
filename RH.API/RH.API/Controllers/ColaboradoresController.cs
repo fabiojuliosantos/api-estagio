@@ -20,6 +20,20 @@ public class ColaboradorController : ControllerBase
         _mapper = mapper;
     }
 
+    [HttpGet("buscar-paginado/{pagina}/{quantidade}")]
+    public async Task<IActionResult> BuscarColaboradoresPorPagina(int pagina, int quantidade)
+    {
+        try
+        {
+            var colaboradores = await _service.BuscarColaboradoresPorPaginaAsync(pagina, quantidade);
+            
+            if (colaboradores == null) return NotFound("Não foram encontrados colaboradores na base de dados!");
+
+            return Ok(colaboradores);
+        }
+        catch (Exception ex) { throw; }
+    }
+
     [HttpGet("retornar")]
     public async Task<IActionResult> BuscarTodos()
     {

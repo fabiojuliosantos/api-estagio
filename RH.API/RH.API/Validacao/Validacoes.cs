@@ -62,6 +62,16 @@ public class Validacoes
             throw new Exception("CPF inválido. Digitos iguais!");
         }
     }
+
+    public bool VerificaPaginaEmBranco(int pagina, int quantidade, int totalColaboradores)
+    {
+        int totalPaginas = totalColaboradores / quantidade;
+
+        if (pagina > totalPaginas)
+            return false; // Falso para quando a pagina solicitada for maior que o total de paginas (retornaria uma pagina vazia)
+        else
+            return true; // Verdadeiro para quando a pagina solicitada estiver dentro do total de paginas
+    }
     #endregion
 }
 

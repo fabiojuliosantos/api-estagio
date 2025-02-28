@@ -1,5 +1,6 @@
 ﻿// VALIDAÇÕES
 
+using System.Linq.Expressions;
 using RH.API.Domain;
 using RH.API.Infra.Interfaces;
 using RH.API.Services.Interface;
@@ -29,6 +30,15 @@ public class EmpresaService : IEmpresaService
         try
         {
             return await _repository.BuscarEmpresaPorId(id);
+        }
+        catch (Exception ex) { throw; }
+    }
+
+    public async Task<RetornoPaginadoEmp<Empresa>> BuscarEmpresasPorPaginaAsync(int pagina, int quantidade)
+    {
+        try
+        {
+            return await _repository.BuscarEmpresasPorPagina(pagina, quantidade);
         }
         catch (Exception ex) { throw; }
     }

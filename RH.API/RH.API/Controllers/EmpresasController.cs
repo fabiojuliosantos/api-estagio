@@ -18,6 +18,20 @@ public class EmpresasController : ControllerBase
         _service = service;
     }
 
+    [HttpGet("buscar-paginado/{pagina}/{quantidade}")] // Não é possível passar por FromQuery pq são obrigatórios
+    public async Task<IActionResult> BuscarEmpresasPorPagina(int pagina, int quantidade)
+    {
+        try
+        {
+            var empresas = await _service.BuscarEmpresasPorPaginaAsync(pagina, quantidade);
+
+            if(empresas == null) return NotFound("Não foram encontradas empresas na base de dados!");
+
+            return Ok(empresas);
+        }
+        catch (Exception ex) { throw; }
+    }
+
     [HttpGet("retornar")]
     public async Task<IActionResult> BuscarTodas()
     {
