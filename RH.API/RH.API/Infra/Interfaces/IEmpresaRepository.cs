@@ -4,6 +4,7 @@ namespace RH.API.Infra.Interfaces;
 
 public interface IEmpresaRepository
 {
+    Task<RetornoPaginado<Empresa>> BuscarEmpresasPorPagina(int pagina, int quantidade);
     Task<List<Empresa>> BuscarTodasEmpresas();
     Task<Empresa> BuscarEmpresaPorId(int id);
     Task<bool> InserirEmpresa(Empresa empresa);

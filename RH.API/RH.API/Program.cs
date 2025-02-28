@@ -1,7 +1,6 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using RH.API.Infra.Context;
 using RH.API.Infra.Interfaces;
 using RH.API.Infra.Respositories;
 using RH.API.Services.Interface;
@@ -13,21 +12,23 @@ var builder = WebApplication.CreateBuilder(args);
 
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+#region Dapper
 builder.Services.AddScoped<IDbConnection>(provider =>
 {
     SqlConnection connection = new SqlConnection(connectionString);
     connection.Open();
     return connection;
 });
-
-builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionString));
+#endregion
 
 #region Services
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
+builder.Services.AddScoped<IColaboradorService, ColaboradorService>();
 #endregion
 
 #region Repositories
 builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
+builder.Services.AddScoped<IColaboradorRepository, ColaboradorRepository>();
 #endregion
 
 builder.Services.AddControllers();

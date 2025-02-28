@@ -17,12 +17,16 @@ public class EmpresaRepository : IEmpresaRepository
     {
         try
         {
-            string sql = $"SELECT TOP 1 * FROM EMPRESAS WHERE EMPRESAID={id}";
-            var empresas = await _conn.QueryFirstOrDefaultAsync<Empresa>(sql);
-            return empresas;
+            string sql = "SELECT TOP 1 * FROM EMPRESAS WHERE EMPRESAID = @Id";
+            var empresa = await _conn.QueryFirstOrDefaultAsync<Empresa>(sql, new { Id = id });
+            return empresa;
         }
-        catch(Exception) { throw; }
+        catch (Exception ex)
+        {
+            throw new Exception("Erro ao buscar empresa por ID", ex);
+        }
     }
+
     public async Task<List<Empresa>> BuscarTodasEmpresas()
     {
         try
@@ -77,6 +81,35 @@ public class EmpresaRepository : IEmpresaRepository
             var empresaExcluida = await _conn.ExecuteAsync(sql);
 
             return empresaExcluida > 0 ? true : false;
+        }
+        catch (Exception) { throw; }
+    }
+
+    public async Task<RetornoPaginado<Empresa>> BuscarEmpresasPorPagina(int pagina, int quantidade)
+    {
+        try
+        {
+            string sql = "SELECT * FROM EMPRESAS ORDER BY EMPRESAID OFFSET @OFFSET ROWS FETCH NEXT @QUANTIDADE ROWS ONLY";
+
+            var parametros = new
+            {
+                OFFSET = (pagina - 1) * quantidade,
+                QUANTIDADE = quantidade
+            };
+
+            var empresas = await _conn.QueryAsync<Empresa>(sql, parametros);
+
+            var totalEmpresas = "SELECT COUNT(*) FROM EMPRESAS";
+
+            var retornoTotalEmpresas = await _conn.ExecuteScalarAsync<int>(totalEmpresas);
+
+            return new RetornoPaginado<Empresa>()
+            {
+                Pagina = pagina,
+                QtdPagina = quantidade,
+                TotalRegistros = retornoTotalEmpresas,
+                Empresas = empresas.ToList()
+            };
         }
         catch (Exception) { throw; }
     }
