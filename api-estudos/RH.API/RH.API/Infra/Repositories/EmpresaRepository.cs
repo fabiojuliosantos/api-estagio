@@ -27,7 +27,7 @@ public class EmpresaRepository : IEmpresaRepository
         catch (Exception) { throw; }
     }
 
-    public async Task<List<Empresa>> BuscarTodasEmpresas()
+    public async Task<List<Empresa>> BuscarTodasEmpresasAsync()
     {
         try
         {
@@ -41,7 +41,7 @@ public class EmpresaRepository : IEmpresaRepository
     public async Task<bool> InserirEmpresa(Empresa empresa)
     {
         try
-        {     
+        {                                     
             string sql = $"INSERT INTO EMPRESAS VALUES(@EMPRESA)";
             var parametros = new
             {

@@ -1,12 +1,12 @@
-﻿namespace RH.API.Domain
+﻿using RH.API.Domain;
+
+namespace RH.API.Dto
 {
-    public class Colaborador
+    public class ColaboradorDto
     {
-        public int ColaboradorID { get; set; }
         public string Nome { get; set; }
         public string Cpf { get; set; }
         public int Matricula { get; set; }
         public int EmpresaID { get; set; }
-        public Empresa Empresa { get; set; }
     }
 }

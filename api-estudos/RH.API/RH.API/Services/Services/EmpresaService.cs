@@ -1,52 +1,43 @@
-﻿using RH.API.Domain;
+﻿using System.Data.SqlClient;
+using RH.API.Domain;
 using RH.API.Infra.Interfaces;
 using RH.API.Services.Interface;
 
-namespace RH.API.Services.Services;
-
-public class EmpresaService : IEmpresaService
+namespace RH.API.Services.Services
 {
-    private readonly IEmpresaRepository _repository;
-    public EmpresaService(IEmpresaRepository repository)
+    public class EmpresaService : IEmpresaService
     {
-        _repository = repository;
-    }
-
-    public async Task<bool> AtualizarEmpresa(Empresa empresa)
-    {
-        try
+        private readonly IEmpresaRepository _repository;
+        public EmpresaService(IEmpresaRepository repository)
+        {
+            _repository = repository;
+        }
+        public async Task<bool> AtualizarEmpresa(Empresa empresa)
         {
             return await _repository.AtualizarEmpresa(empresa);
         }
-        catch (Exception ex) { throw; }
-    }
 
-    public async Task<Empresa> BuscarEmpresaPorId(int id)
-    {
-        try
+        public async Task<Empresa> BuscarEmpresaPorId(int id)
         {
             return await _repository.BuscarEmpresaPorId(id);
         }
-        catch (Exception ex) { throw; }
-    }
 
-    public async Task<List<Empresa>> BuscarTodasEmpresasAsync()
-    {
-        try
+        public async Task<List<Empresa>> BuscarTodasEmpresasAsync()
         {
-            var empresas = await _repository.BuscarTodasEmpresas();
-            return empresas;
+
+                var empresas = await _repository.BuscarTodasEmpresasAsync();
+                return empresas;
+
         }
-        catch (Exception) { throw; }
-    }
 
-    public async Task<bool> ExcluirEmpresa(int id)
-    {
-        return await _repository.ExcluirEmpresa(id);
-    }
+        public async Task<bool> ExcluirEmpresa(int id)
+        {
+            return await _repository.ExcluirEmpresa(id);
+        }
 
-    public async Task<bool> InserirEmpresa(Empresa empresa)
-    {
-        return await _repository.InserirEmpresa(empresa);
+        public async Task<bool> InserirEmpresa(Empresa empresa)
+        {
+            return await _repository.InserirEmpresa(empresa);
+        }
     }
 }

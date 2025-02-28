@@ -1,78 +1,91 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RH.API.Domain;
 using RH.API.Services.Interface;
 
-namespace RH.API.Controllers
+namespace RH.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class EmpresasController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EmpresasController : ControllerBase
+    private readonly IEmpresaService _service;
+
+    public EmpresasController(IEmpresaService service)
     {
-        private readonly IEmpresaService _service;
+        _service = service;
+    }
 
-        public EmpresasController(IEmpresaService service)
+    [HttpGet("buscar-todas")]
+    public async Task<IActionResult> BuscarTodas()
+    {
+        try
         {
-            _service = service;
+            var empresas = await _service.BuscarTodasEmpresasAsync();
+            return Ok(empresas);
         }
-
-        [HttpGet]
-        public async Task<IActionResult> BuscarTodas()
+        catch (Exception)
         {
-            try
-            {
-                var empresas = await _service.BuscarTodasEmpresasAsync();
-                return Ok(empresas);
-            }
-            catch (Exception ex) { throw; }
-        }
-
-        [HttpGet("buscar-id/{id}")]
-        public async Task<IActionResult> BuscarPorId(int id)
-        {
-            try
-            {
-                var empresas = await _service.BuscarEmpresaPorId(id);
-
-                if (empresas == null)
-                {
-                    return NotFound(new { message = "Empresa não encontrada." });
-                }
-
-                return Ok(empresas);
-            }
-            catch (Exception) { throw; }
-        }
-
-        [HttpPost("inserir")]
-        public async Task<IActionResult> Inserir([FromBody] Empresa empresa)
-        {
-            try
-            {
-                var empresas = await _service.InserirEmpresa(empresa);
-                return Ok(empresas);
-            }
-            catch (Exception ex) { throw; }
-        }
-        [HttpPut("atualizar")]
-        public async Task<IActionResult> Atualizar([FromBody] Empresa empresa)
-        {
-            try
-            {
-                var empresas = await _service.AtualizarEmpresa(empresa);
-                return Ok(empresas);
-            }
-            catch (Exception ex) { throw; }
-        }
-        [HttpDelete("excluir/{id}")]
-        public async Task<IActionResult> Excluir(int id)
-        {
-            try
-            {
-                var empresas = await _service.ExcluirEmpresa(id);
-                return Ok(empresas);
-            }
-            catch (Exception ex) { throw; }
+            throw;
         }
     }
+    [HttpGet("buscar-id/{id}")]
+    public async Task<IActionResult> BuscarPorId(int id)
+    {
+        try
+        {
+            var empresa = await _service.BuscarEmpresaPorId(id);
+
+            if (empresa == null)
+            {
+                return NotFound(new { message = "Empresa não encontrada." });
+            }
+
+            return Ok(empresa);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    [HttpPost("Inserir")]
+    public async Task<IActionResult> Inserir([FromBody] Empresa empresa)
+    {
+        try
+        {
+            var empresas = await _service.InserirEmpresa(empresa);
+            return Ok(empresas);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+    [HttpPut("Atualizar")]
+    public async Task<IActionResult> Atualizar([FromBody] Empresa empresa)
+    {
+        try
+        {
+            var empresas = await _service.AtualizarEmpresa(empresa);
+            return Ok(empresas);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+    [HttpDelete("Excluir/{id}")]
+    public async Task<IActionResult> Excluir(int id)
+    {
+        try
+        {
+            var empresas = await _service.ExcluirEmpresa(id);
+            return Ok(empresas);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
 }

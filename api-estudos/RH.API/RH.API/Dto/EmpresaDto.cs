@@ -1,9 +1,8 @@
-﻿namespace RH.API.Domain
+﻿namespace RH.API.Dto
 {
-    public class Empresa
+    public class EmpresaDto
     {
         public int EmpresaID { get; set; }
         public string Nome { get; set; }
     }
-
 }
