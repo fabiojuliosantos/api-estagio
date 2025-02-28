@@ -5,6 +5,7 @@ namespace RH.API.Infra.Interfaces
 {
     public interface IColaboradoresRepository
     {
+        Task<ColaboradorPaginado<Colaborador>> BuscarColaboradorPorPagina(int pagina, int quantidade);
         Task<List<ColaboradorDto>> BuscarTodosColaboradores();  
         Task<ColaboradorDto> BuscarColaboradoresPorId(int id); 
         Task<bool> InserirColaborador(Colaborador colaborador);

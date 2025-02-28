@@ -40,6 +40,37 @@ namespace RH.API.Infra.Repositories
             }
         }
 
+        public async Task<ColaboradorPaginado<Colaborador>> BuscarColaboradorPorPagina(int pagina, int quantidade)
+        {
+            try
+            {
+                string sql = "SELECT c.*, e.Nome AS EmpresaNome FROM COLABORADORES c INNER JOIN EMPRESAS e ON c.EmpresaID = e.EmpresaID ORDER BY c.ColaboradorID OFFSET @OFFSET ROWS FETCH NEXT @QUANTIDADE ROWS ONLY;";
+
+                var parametros = new
+                {
+                    OFFSET = (pagina - 1) * quantidade,
+                    QUANTIDADE = quantidade
+                };
+
+                var colaboradores = await _connection.QueryAsync<Colaborador>(sql, parametros);
+
+                var totalColaborador = "SELECT COUNT(*) FROM COLABORADORES";
+
+                var retornoTotalColaboradores = await _connection.ExecuteScalarAsync<int>(totalColaborador);
+
+                var retornoPaginado = new ColaboradorPaginado<Colaborador>
+                {
+                    TotalRegistros = retornoTotalColaboradores,
+                    Pagina = pagina,
+                    QtdPagina = quantidade,
+                    Colaboradores = colaboradores.ToList()
+                };
+
+                return retornoPaginado;
+            }
+            catch (Exception ex) { throw; }
+        }
+
         public async Task<ColaboradorDto> BuscarColaboradoresPorId(int id)
         {
             try

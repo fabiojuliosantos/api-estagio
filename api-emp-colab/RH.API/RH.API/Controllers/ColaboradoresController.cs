@@ -43,6 +43,19 @@ namespace RH.API.Controllers
             catch (Exception) { throw; }
         }
 
+        [HttpGet("buscar-colab-pagina/{pagina}/{quantidade}")]
+        public async Task<IActionResult> BuscarColaboradorPorPagina(int pagina, int quantidade)
+        {
+            try
+            {
+                var colaboradores = await _service.BuscarColaboradorPorPagina(pagina, quantidade);
+                if (colaboradores == null)
+                    return NotFound("Nenhum colaborador encontrada.");
+                return Ok(colaboradores);
+            }
+            catch (Exception ex) { throw; }
+        }
+
         [HttpPost("inserir-colaborador")]
         public async Task<IActionResult> Inserir([FromBody] CreateColaboradorDto colaborador)
         {

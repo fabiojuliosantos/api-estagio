@@ -48,6 +48,11 @@ namespace RH.API.Services.Services
             return await _colaboradoresRepository.BuscarColaboradoresPorId(id);
         }
 
+        public async Task<ColaboradorPaginado<Colaborador>> BuscarColaboradorPorPagina(int pagina, int quantidade)
+        {
+            return await _colaboradoresRepository.BuscarColaboradorPorPagina(pagina, quantidade);
+        }
+
         public async Task<List<ColaboradorDto>> BuscarTodosColaboradores()
         {
             return await _colaboradoresRepository.BuscarTodosColaboradores();
@@ -75,6 +80,8 @@ namespace RH.API.Services.Services
             if (colaborador.EmpresaId <= 0)
                 throw new Exception("O ID da empresa deve ser um número positivo.");
         }
+
+        
 
         #endregion
 

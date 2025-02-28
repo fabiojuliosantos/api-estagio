@@ -5,7 +5,8 @@ using RH.API.DTOs;
 namespace RH.API.Services.Interface
 {
     public interface IColaboradorService
-    {       
+    {
+        Task<ColaboradorPaginado<Colaborador>> BuscarColaboradorPorPagina(int pagina, int quantidade);
         Task<List<ColaboradorDto>> BuscarTodosColaboradores();
         Task<ColaboradorDto> BuscarColaboradoresPorId(int id);
         Task<bool> InserirColaborador(CreateColaboradorDto colaborador);

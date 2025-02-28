@@ -22,6 +22,12 @@ public class EmpresaService : IEmpresaService
         catch (Exception ex) { throw; }
     }
 
+    public async Task<RetornoPaginado<Empresa>> BuscaEmpresasPorPagina(int pagina, int quantidade)
+    {
+        var retorno = await _repository.BuscarEmpresasPaginadas(pagina, quantidade);
+        return retorno;
+    }
+
     public async Task<Empresa> BuscarEmpresaPorId(int id)
     {
         try
