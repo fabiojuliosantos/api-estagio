@@ -17,6 +17,24 @@ public class ColaboradorController : ControllerBase
         _service = service;
     }
 
+
+    [HttpGet("buscar-paginado/{pagina}/{quantidade}")]
+    public async Task<IActionResult> BuscarEmpresasPaginadas(int pagina, int quantidade)
+    {
+        try
+        {
+            var Colaboradores = await _service.BuscarColaboradorPorPagina(pagina, quantidade);
+            
+            if (Colaboradores == null) return NotFound("Não foram encontradas empresas");
+            
+            return Ok(Colaboradores);
+        }
+        catch (Exception)
+        {
+           throw;
+        }
+    }
+
     [HttpGet("buscar-colaboradores")]
     public async Task<IActionResult> BuscarTodos()
     {

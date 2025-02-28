@@ -1,6 +1,7 @@
 using RHAPi.Domain;
 using RHAPi.Infra.Interfaces;
 using RHAPi.Service.Interfaces;
+using RHAPI.Domain;
 
 namespace RHAPi.Service.Service;
 
@@ -55,5 +56,18 @@ public class EmpresaService : IEmpresaService
             return await _repository.DeletarEmpresa(id);
         }
         catch (Exception) { throw; }
+    }
+
+    public async Task<RetornoPaginado<Empresa>> BuscarEmpresaPorPagina(int pagina, int quantidade)
+    {
+        try
+        {
+            return await _repository.BuscarEmpresaPorPagina(pagina, quantidade);
+        }
+        catch (System.Exception)
+        {
+            
+            throw;
+        }
     }
 }

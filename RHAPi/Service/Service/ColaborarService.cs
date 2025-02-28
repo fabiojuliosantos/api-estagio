@@ -1,4 +1,5 @@
 using RHAPi.Domain;
+using RHAPI.Domain;
 using RHAPI.Infra.Dto;
 using RHAPI.Infra.Interfaces;
 using RHAPI.Service.Interfaces;
@@ -51,5 +52,10 @@ public class ColaboradorService : IColaboradorService
     public async Task<bool> DeletarColaborador(int id)
     {
         return await  _repository.Deletar(id);
+    }
+
+    public async Task<RetornoPaginado<Colaborador>> BuscarColaboradorPorPagina(int pagina, int quantidade)
+    {
+        return await _repository.BuscaColaboradorPorPagina(pagina, quantidade);
     }
 }

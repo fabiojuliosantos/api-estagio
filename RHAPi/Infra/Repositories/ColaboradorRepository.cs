@@ -1,6 +1,7 @@
 using System.Data;
 using Dapper;
 using RHAPi.Domain;
+using RHAPI.Domain;
 using RHAPI.Infra.Dto;
 using RHAPI.Infra.Interfaces;
 using RHAPI.Utils;
@@ -109,5 +110,37 @@ public class ColaboradorRespository : IColaboradorRepository
             return colaboradorExcluido > 0 ? true : false;
         }
         catch (Exception) { throw; }
+    }
+
+    public async Task<RetornoPaginado<Colaborador>> BuscaColaboradorPorPagina(int pagina, int quantidade)
+    {
+        string sql = @"
+            SELECT
+                C.*, 
+                E.NOME AS NomeEmpresa 
+            FROM 
+                COLABORADORES C 
+            INNER JOIN 
+                EMPRESAS E ON C.EmpresaID = E.EmpresaID
+            ORDER BY COLABORADORID
+            OFFSET @OFFSET ROWS FETCH NEXT @QUANTIDADE ROWS ONLY";
+
+        var parametros = new
+        {
+            OFFSET = (pagina -1) * quantidade,
+            QUANTIDADE = quantidade,
+        };
+
+        var colaboradores = await _conn.QueryAsync<Colaborador>(sql, parametros);
+        var consultaTotalColaboradores = "SELECT COUNT(*) FROM COLABORADORES";
+        var retornoTotalColaboradores = await _conn.ExecuteScalarAsync<int>(consultaTotalColaboradores);
+    
+        return new RetornoPaginado<Colaborador>()
+        {
+            Pagina = pagina,
+            QtdPagina = quantidade,
+            TotalRegistros = retornoTotalColaboradores,
+            EmpresasLista = [.. colaboradores],
+        };
     }
 }

@@ -2,6 +2,7 @@ using System.Data;
 using Dapper;
 using RHAPi.Domain;
 using RHAPi.Infra.Interfaces;
+using RHAPI.Domain;
 
 namespace RHAPi.Infra.Repositories;
 public class EmpresaRepositoy : IEmpresaRepository
@@ -83,5 +84,37 @@ public class EmpresaRepositoy : IEmpresaRepository
             return empresaExcluida > 0 ? true : false;
         }
         catch (Exception) { throw; }
+    }
+
+    public async Task<RetornoPaginado<Empresa>> BuscarEmpresaPorPagina(int pagina, int quantidade)
+    {
+        try
+        {
+            string sql = "SELECT * FROM EMPRESAS ORDER BY EMPRESAID OFFSET @OFFSET ROWS FETCH NEXT @QUANTIDADE ROWS ONLY";
+            var parametros = new
+            {
+                OFFSET = (pagina -1) * quantidade,
+                QUANTIDADE = quantidade,
+            };
+
+            var empresas = await _conn.QueryAsync<Empresa>(sql, parametros);
+
+            var totalEmpresas = "SELECT COUNT(*) FROM EMPRESAS";
+
+            var retornoTotalEmpresas = await _conn.ExecuteScalarAsync<int>(totalEmpresas);
+
+            return new RetornoPaginado<Empresa>()
+            {
+                Pagina = pagina,
+                QtdPagina = quantidade,
+                TotalRegistros = retornoTotalEmpresas,
+                EmpresasLista = [.. empresas],
+            };
+        }
+        catch (Exception)
+        {
+            
+            throw;
+        }
     }
 }
