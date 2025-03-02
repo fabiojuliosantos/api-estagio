@@ -184,7 +184,7 @@ namespace rh.api.Infra.Repositories
                     SELECT TOP 1 c.*, e.NOME AS NomeEmpresa
                     FROM COLABORADORES c
                     INNER JOIN EMPRESAS e ON c.EMPRESAID = e.EMPRESAID
-                    WHERE c.COLABORADORES = @Id";
+                    WHERE c.COLABORADORID = @Id";
 
                 var colaborador = await _conn.QueryFirstOrDefaultAsync<Colaborador>(sql, new { Id = id });
                 return colaborador;
@@ -262,7 +262,7 @@ namespace rh.api.Infra.Repositories
         {
             try
             {
-                string sql = "DELETE FROM COLABORADORES WHERE COLABORADORES = @Id";
+                string sql = "DELETE FROM COLABORADORES WHERE COLABORADORID = @Id";
 
                 var colaboradorExcluido = await _conn.ExecuteAsync(sql, new { Id = id });
 
