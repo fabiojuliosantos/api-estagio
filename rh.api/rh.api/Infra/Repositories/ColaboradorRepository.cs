@@ -241,7 +241,7 @@ namespace rh.api.Infra.Repositories
 
                 var parametros = new
                 {
-                    ID = colaborador.ColaboradorID,
+                    COLABORADORID = colaborador.ColaboradorID,
                     NOME = colaborador.Nome,
                     CPF = colaborador.Cpf,
                     MATRICULA = colaborador.Matricula,
@@ -282,7 +282,7 @@ namespace rh.api.Infra.Repositories
                     SELECT c.*, e.NOME AS NomeEmpresa
                     FROM COLABORADORES c
                     INNER JOIN EMPRESAS e ON c.EMPRESAID = e.EMPRESAID
-                    ORDER BY c.COLABORADORES
+                    ORDER BY c.COLABORADORID
                     OFFSET @OFFSET ROWS FETCH NEXT @QUANTIDADE ROWS ONLY";
 
                 var parametros = new
