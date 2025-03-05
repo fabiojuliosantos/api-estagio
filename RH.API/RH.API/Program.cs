@@ -5,7 +5,9 @@ using RH.API.Infra.Context;
 using RH.API.Infra.Interfaces;
 using RH.API.Infra.Repositories;
 using RH.API.Services.Interface;
+using RH.API.Services.Interface.TestePOO;
 using RH.API.Services.Services;
+using RH.API.Services.Services.TestePOO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,7 @@ builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionSt
 #region Services
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
 builder.Services.AddScoped<IColaboradorService, ColaboradorService>();
+builder.Services.AddSingleton<IFuncionarioService, FuncionarioService>();
 #endregion
 
 #region Repositories
