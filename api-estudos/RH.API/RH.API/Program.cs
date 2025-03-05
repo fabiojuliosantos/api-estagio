@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RH.API.Infra.Context;
 using RH.API.Infra.Interfaces;
 using RH.API.Infra.Repositories;
+using RH.API.Services;
 using RH.API.Services.Interface;
 using RH.API.Services.Services;
 
@@ -29,6 +30,10 @@ builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
 
 builder.Services.AddScoped<IColaboradorService, ColaboradorService>();
 builder.Services.AddScoped<IColaboradorRepository, ColaboradorRepository>();
+
+builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
+builder.Services.AddSingleton<IFuncionarioService, FuncionarioService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
