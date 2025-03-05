@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using rh.api.Infra.Context;
 using rh.api.Infra.Repositories;
+using rh.api.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,10 @@ builder.Services.AddScoped<IColaboradorService, ColaboradorService>();
 builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
 builder.Services.AddScoped<IColaboradorRepository, ColaboradorRepository>(); // Certifique-se de registrar a interface e implementação corretamente
 #endregion Repositories
+
+//Primeira Questao
+//builder.Services.AddSingleton<IFuncionarioService, FuncionarioService>();
+builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
