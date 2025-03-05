@@ -26,6 +26,7 @@ builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionSt
 #region Services
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
 builder.Services.AddScoped<IColaboradorService, ColaboradorService>();
+builder.Services.AddSingleton<IFuncionarioService, FuncionarioService>();
 #endregion Services
 
 #region Repositories

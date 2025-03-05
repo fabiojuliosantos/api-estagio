@@ -148,6 +148,28 @@ namespace RH.API.Infra.Repositories
             }
             catch (Exception) { throw; }
         }
+
+        public async Task<Colaborador?> BuscarCpf(string cpf)
+        {
+            try
+            {
+                string sql = $"SELECT * FROM COLABORADORES WHERE CPF = @CPF";
+
+                var parametros = new
+                {
+                    CPF = cpf
+
+                };
+                var cpfColaborador = await _conn.QueryFirstOrDefaultAsync<Colaborador>(sql, parametros);
+                return cpfColaborador;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
 

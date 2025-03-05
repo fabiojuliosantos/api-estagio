@@ -221,6 +221,10 @@ public class ColaboradorService : IColaboradorService
             if (string.IsNullOrWhiteSpace(colaboradorDto.Cpf) || !ValidarCpf(colaboradorDto.Cpf))
                 return new RespostaDTO(false, "CPF inválido");
 
+                var cpfExistente = await _repository.BuscarCpf(colaboradorDto.Cpf);
+            if (cpfExistente != null)
+               return new RespostaDTO(false, "Já existe um colaborador com esse cpf");
+
             if (colaboradorDto.Matricula <= 0)
                 return new RespostaDTO(false, "A matrícula deve ser um número positivo");
 
@@ -228,6 +232,7 @@ public class ColaboradorService : IColaboradorService
             if (matriculaExistente != null)
                 return new RespostaDTO(false, "Já existe um colaborador com essa matrícula");
 
+        
             var colaborador = new Colaborador
             {
                 Nome = colaboradorDto.Nome,
@@ -235,6 +240,9 @@ public class ColaboradorService : IColaboradorService
                 Matricula = colaboradorDto.Matricula,
                 EmpresaID = colaboradorDto.EmpresaId
             };
+
+
+            
 
 
             bool resultado = await _repository.InserirColaborador(colaborador);

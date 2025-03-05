@@ -10,6 +10,7 @@ public interface IColaboradorRepository
     Task<bool> AtualizarColaborador(Colaborador colaborador);
     Task<bool> ExcluirColaborador(int id);
     Task<Colaborador> BuscarMatricula(int matricula);
+    Task<Colaborador> BuscarCpf(string cpf);
     
 
 }
