@@ -27,7 +27,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", policy =>
     {
-        policy.AllowAnyOrigin() // Permite todas as origens (pode restringir se necessário)
+        policy.AllowAnyOrigin() // permite todas as origens (pode restringir se necessário)
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
@@ -36,6 +36,8 @@ builder.Services.AddCors(options =>
 #region Servico
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
 builder.Services.AddScoped<IColaboradorService, ColaboradoresService>();
+builder.Services.AddSingleton<IBcom, BcomService>();
+builder.Services.AddSingleton<FuncionarioService>();
 #endregion
 #region Repositório
 builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();

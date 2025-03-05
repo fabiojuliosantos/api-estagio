@@ -4,6 +4,6 @@
     {
         public string Nome { get; set; }
         public string Cargo { get; set; }
-        public float Salario { get; set; }
+        public double Salario { get; set; }
     }
 }
