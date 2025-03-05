@@ -25,6 +25,8 @@ builder.Services.AddScoped<IEmpresaService, EmpresaService>();
 builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
 builder.Services.AddScoped<IColaboradorService, ColaboradorService>();
 builder.Services.AddScoped<IColaboradorRepository, ColaboradorRepository>();
+builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
+builder.Services.AddSingleton<IFuncionarioService, FuncionarioService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
