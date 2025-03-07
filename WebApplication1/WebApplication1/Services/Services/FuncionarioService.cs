@@ -6,10 +6,13 @@ namespace RH.API.Services.Services;
 public class FuncionarioService : IFuncionarioService
 {
     private readonly List<Funcionario> funcionarios = new List<Funcionario>();
+    private static int _id = 1;
     public bool AdicionarFuncionario(Funcionario funcionario)
     {
-            funcionarios.Add(funcionario);
-            return true;
+        funcionario.Id = _id;
+        funcionarios.Add(funcionario);
+        _id++;
+        return true;
     }
 
     public double CalcularMediaSalario()
