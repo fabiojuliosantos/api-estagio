@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using RH.API.Infra.Context;
@@ -23,8 +24,12 @@ builder.Services.AddScoped<IDbConnection>(provider =>
 
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionString));
 
+// Configuração do AutoMapper
+builder.Services.AddAutoMapper(typeof(Program));
+
 #region Services
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
+builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
 #endregion Services
 
 #region Repositories

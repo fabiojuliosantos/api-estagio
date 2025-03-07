@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RH.API.Domain;
+using RH.API.Domain.Entities;
 using RH.API.Services.Interface;
 
 namespace RH.API.Controllers;

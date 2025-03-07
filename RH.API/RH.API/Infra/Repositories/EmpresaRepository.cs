@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using RH.API.Domain;
+using RH.API.Domain.Entities;
 using RH.API.Infra.Interfaces;
 using System.Data;
 
