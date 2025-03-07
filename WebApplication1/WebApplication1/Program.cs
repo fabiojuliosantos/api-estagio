@@ -28,6 +28,7 @@ builder.Services.AddScoped<IColaboradorRepository, ColaboradorRepository>();
 builder.Services.AddSingleton<IFuncionarioService, FuncionarioService>();
 builder.Services.AddSingleton<IBcomService, BcomService>();
 builder.Services.AddSingleton<IProdutoService, ProdutoService>();
+builder.Services.AddSingleton<IEstudanteService, EstudanteService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
