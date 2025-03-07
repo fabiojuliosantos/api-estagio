@@ -75,7 +75,7 @@ public class FuncionarioService : IFuncionarioService
         try
         {
             var funcionario = _funcionarios.FirstOrDefault(f => f.Id == id);
-            
+
             // valida 
             if (funcionario is null)
                 throw new Exception("Funcionário não encontrado!");
@@ -102,7 +102,7 @@ public class FuncionarioService : IFuncionarioService
         try
         {
             var funcionario = _funcionarios.FirstOrDefault(f => f.Id == id);
-            
+
             // valida se existe funcionário
             if (funcionario is null)
                 throw new Exception("Funcionário não encontrado!");
@@ -110,6 +110,19 @@ public class FuncionarioService : IFuncionarioService
             // remove funcionario com id enviado
             _funcionarios.RemoveAll(p => p.Id == id);
             return true;
+        }
+        catch (Exception) { throw; }
+    }
+
+    public string CalcularMediaSalarial()
+    {
+        try
+        {
+            if (_funcionarios == null || _funcionarios.Count == 0)
+                throw new Exception("Nenhum funcionário cadastrado!");
+
+            var mediaSalarial = Math.Round(_funcionarios.Average(funcionario => funcionario.Salario), 2);
+            return $"Média salarial: {mediaSalarial:C}";
         }
         catch (Exception) { throw; }
     }

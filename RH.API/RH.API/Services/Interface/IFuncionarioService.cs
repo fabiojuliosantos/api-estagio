@@ -9,6 +9,7 @@ namespace RH.API.Services.Interface
             where TInputModel : class
             where TOutputModel : class
             where TValidator : AbstractValidator<Funcionario>;
+        string CalcularMediaSalarial();
         Task<bool> Excluir(int id);
         Task<TOutputModel> InserirAsync<TInputModel, TOutputModel, TValidator>(TInputModel inputModel)
             where TInputModel : class

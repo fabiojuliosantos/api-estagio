@@ -16,6 +16,19 @@ public class FuncionarioController : ControllerBase
         _service = service;
     }
 
+    [HttpGet("media-salarial")]
+    public async Task<IActionResult> CalcularMediaSalarial()
+    {
+        try
+        {
+            return Ok(_service.CalcularMediaSalarial());
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
     [HttpGet]
     public async Task<IActionResult> Listar()
     {
