@@ -25,6 +25,8 @@ builder.Services.AddScoped<IDbConnection>(provider =>
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
 builder.Services.AddScoped<IColaboradorService, ColaboradorService>();
 builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
+builder.Services.AddScoped<IContaBancariaService, ContaBancariaService>();
+builder.Services.AddScoped<IProdutoService, ProdutoService>();
 #endregion
 
 #region Repositories

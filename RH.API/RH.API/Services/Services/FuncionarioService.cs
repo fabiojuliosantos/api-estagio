@@ -6,7 +6,7 @@ namespace RH.API.Services.Services;
 public class FuncionarioService : IFuncionarioService
 {
     private static List<Funcionario> _funcionarios = new();
-    private static int _nextId = 1;
+    private static int _proximoId = 1;
 
     public IEnumerable<Funcionario> ListarFuncionarios()
     {
@@ -28,7 +28,7 @@ public class FuncionarioService : IFuncionarioService
             {
                 throw new Exception("Nome e salario sao obrigatorios e salario maior que zero");
             }
-            funcionario.Id = _nextId++;
+            funcionario.Id = _proximoId++;
             _funcionarios.Add(funcionario);
             return funcionario;
         }
