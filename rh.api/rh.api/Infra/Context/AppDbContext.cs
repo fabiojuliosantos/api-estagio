@@ -15,10 +15,24 @@ public class AppDbContext : DbContext
     #region Primeira Questão
     public DbSet<Funcionario> Funcionarios { get; set; }
     #endregion
+
+    //Segunda Questao
+    public DbSet<Banco>? Bancos { get; set; }
+
+    //Terceira Questao
+
+    public DbSet<Produto> Produtos { get; set; }
+
+    //Quarta Questao
+    public DbSet<Estudante> Estudantes { get; set; }
+
+    //Quarta Questao
+    //public DbSet<Biblioteca> Bibliotecas { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+     
 
-       
     }
 }

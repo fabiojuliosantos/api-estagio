@@ -5,10 +5,10 @@ namespace rh.api.Services.Services
 {
     public class FuncionarioService : IFuncionarioService
     {
-        //Lista para armazenar os funcionários
+        //Armazena os funcionários em uma lista
         private static readonly List<Funcionario> _funcionarios = new List<Funcionario>();
 
-        //Variável para controlar id
+        //Constante para controlar id
         private static int _nextId = 1;
 
         public void AdicionarFuncionario(Funcionario funcionario)
@@ -28,16 +28,17 @@ namespace rh.api.Services.Services
 
         public decimal CalcularMediaSalarial()
         {
-            try {   if (!_funcionarios.Any())
-                return 0;
+            try
+            {
+                if (!_funcionarios.Any())
+                    return 0;
 
-            return _funcionarios.Average(f => f.Salario);
+                return _funcionarios.Average(f => f.Salario);
             }
             catch (Exception)
             {
                 throw;
             }
-          
         }
     }
 }

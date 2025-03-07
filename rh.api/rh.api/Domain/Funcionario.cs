@@ -11,7 +11,7 @@
         {
             try
             {
-                //Para não permitir valores nulos ou vazios
+                // Validações
                 if (string.IsNullOrEmpty(nome))
                     throw new ArgumentException("O nome não pode ser vazio.");
 
@@ -22,8 +22,10 @@
                 Cargo = cargo;
                 Salario = salario;
             }
-            catch (Exception) 
-            { throw; }
+            catch (Exception)
+            {
+                throw;
             }
+        }
     }
 }
