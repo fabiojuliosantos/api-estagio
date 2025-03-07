@@ -6,6 +6,7 @@ using RHAPi.Infra.Interfaces;
 using RHAPi.Infra.Repositories;
 using RHAPi.Service.Interfaces;
 using RHAPi.Service.Service;
+using RHAPI.Domain;
 using RHAPI.Infra.Interfaces;
 using RHAPI.Infra.Repositories;
 using RHAPI.Service.Interfaces;
@@ -30,6 +31,7 @@ builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionSt
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
 builder.Services.AddScoped<IColaboradorService, ColaboradorService>();
 builder.Services.AddSingleton<IFuncionarioService, FuncionarioService>();
+builder.Services.AddSingleton<IBcomService, BcomService>();
 #endregion
 
 #region Repository

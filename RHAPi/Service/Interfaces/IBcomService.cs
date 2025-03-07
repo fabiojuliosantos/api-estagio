@@ -1,11 +1,12 @@
 using RHAPI.Domain;
+using RHAPI.Infra.Dto;
 
 namespace RHAPI.Service.Interfaces;
 
 public interface IBcomService
 {
-    Bcom CriarConta(Bcom contaBancaria);
-    decimal Depositar(decimal valorDeposito);
-    decimal Sacar(decimal ValorSaque, Bcom ContaASacar);
-    decimal ExibirSaldo();
+    Bcom CriarConta(CreateBcomDto contaBancaria);
+    string Depositar(decimal valorDeposito, string numeroConta);
+    string Sacar(decimal ValorSaque, string numeroConta);
+    string ExibirSaldo(string numeroConta);
 }
