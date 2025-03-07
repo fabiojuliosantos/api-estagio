@@ -5,7 +5,7 @@ namespace RH.API.Services.Interface;
 
 public interface IFuncionarioService
 {
-     List<Funcionario>  BuscarTodosFuncionarios();
+     List<Funcionario> BuscarTodosFuncionarios();
 
     RespostaDTO InserirFuncionario(Funcionario funcionario);
     RespostaDTO CalcularMediaSalarial();

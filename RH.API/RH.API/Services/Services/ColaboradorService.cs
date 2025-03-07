@@ -214,7 +214,7 @@ public class ColaboradorService : IColaboradorService
     {
         try
         {
-            // 🔹 Validações antes de salvar
+          
             if (string.IsNullOrWhiteSpace(colaboradorDto.Nome))
                 return new RespostaDTO(false, "Nome do colaborador é obrigatório");
 

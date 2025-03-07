@@ -19,21 +19,21 @@ public class FuncionarioService : IFuncionarioService
 
             if (!_funcionario.Any())
             {
-                Console.WriteLine("Nenhum funcionario na lista");
-                    
+                throw new Exception("Nenhum funcionario foi encontrado");
+
             }
 
 
             foreach (var funcionario in _funcionario)
             {
-                Console.WriteLine($"Nome:{funcionario.Nome}, Cargo: {funcionario.Cargo}, Salário: {funcionario.Salario}");
+                Console.WriteLine($"Nome:{funcionario.Nome}, Cargo: {funcionario.Cargo}, Salário: {funcionario.Salario:C}");
 
             }
             return _funcionario;
         }
         catch (Exception ex)
         {
-            { throw; }
+            { throw new Exception("Ocorreu um erro ao processar a lista de estudantes. Detalhes: " + ex.Message); }
         }
     }
 

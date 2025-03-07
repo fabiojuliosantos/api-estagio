@@ -10,8 +10,10 @@ using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Configurações de serviços
+builder.Services.AddAutoMapper(typeof(Program));
 
+// Configuração do banco de dados
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddScoped<IDbConnection>(provider =>
@@ -24,9 +26,13 @@ builder.Services.AddScoped<IDbConnection>(provider =>
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionString));
 
 #region Services
-builder.Services.AddScoped<IEmpresaService, EmpresaService>();
-builder.Services.AddScoped<IColaboradorService, ColaboradorService>();
+//builder.Services.AddScoped<IEmpresaService, EmpresaService>();
+//builder.Services.AddScoped<IColaboradorService, ColaboradorService>();
 builder.Services.AddSingleton<IFuncionarioService, FuncionarioService>();
+builder.Services.AddSingleton<IbcomService, BcomService>();
+builder.Services.AddSingleton<IprodutoService, ProdutosService>();
+builder.Services.AddSingleton<IEstudanteService, EstudanteService>();
+builder.Services.AddSingleton<ILivroService, LivroService>();
 #endregion Services
 
 #region Repositories
@@ -35,14 +41,13 @@ builder.Services.AddScoped<IColaboradorRepository, ColaboradorRepository>();
 #endregion Repositories
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen();
 
+// Build da aplicação
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configurações do pipeline de requisições
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -50,9 +55,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
+// Executa a aplicação
 app.Run();
