@@ -19,8 +19,6 @@ public class FuncionariosController : ControllerBase
         _service = service;
     }
 
-    List<Funcionario> funcionarios = [];
-
     [HttpGet("retornar")]
     public async Task<IActionResult> BuscarFuncionarios()
     {
