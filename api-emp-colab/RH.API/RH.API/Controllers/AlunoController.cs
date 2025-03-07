@@ -11,9 +11,9 @@ namespace RH.API.Controllers
     [ApiController]
     public class AlunoController : ControllerBase
     {
-        private readonly IAluno _alunoService;
+        private readonly IAlunoService _alunoService;
 
-        public AlunoController(IAluno alunoService)
+        public AlunoController(IAlunoService alunoService)
         {
             _alunoService = alunoService;
         }

@@ -36,10 +36,12 @@ builder.Services.AddCors(options =>
 #region Servico
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
 builder.Services.AddScoped<IColaboradorService, ColaboradoresService>();
-builder.Services.AddSingleton<IBcom, BcomService>();
-builder.Services.AddSingleton<IFuncionario, FuncionarioService>();
-builder.Services.AddSingleton<IProduto, ProdutosService>();
-builder.Services.AddSingleton<IAluno, AlunoService>();
+builder.Services.AddSingleton<IBcomService, BcomService>();
+builder.Services.AddSingleton<IFuncionarioService, FuncionarioService>();
+builder.Services.AddSingleton<IProdutoService, ProdutosService>();
+builder.Services.AddSingleton<IAlunoService, AlunoService>();
+builder.Services.AddSingleton<ILivroService, LivroService>();
+builder.Services.AddSingleton<IEstoqueService, EstoqueService>();
 #endregion
 #region Repositório
 builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();

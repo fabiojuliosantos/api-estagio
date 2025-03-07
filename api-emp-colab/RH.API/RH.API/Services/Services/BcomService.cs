@@ -4,7 +4,7 @@ using RH.API.Services.Interface;
 
 namespace RH.API.Services.Services
 {
-    public class BcomService : IBcom
+    public class BcomService : IBcomService
     {
         private readonly List<Bcom> _bcom = new List<Bcom>(); 
         public (bool Sucesso, string Mensagem) AdicionarConta(Bcom bcom)

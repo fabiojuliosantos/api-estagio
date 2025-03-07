@@ -4,7 +4,7 @@ using RH.API.Dto;
 
 namespace RH.API.Services.Interface
 {
-    public interface IAluno
+    public interface IAlunoService
     {
         (bool Sucesso, string Mensagem) AdicionarAluno(Aluno aluno);
         List<Aluno> ListarAlunos();

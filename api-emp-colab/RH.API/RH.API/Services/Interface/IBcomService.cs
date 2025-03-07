@@ -2,7 +2,7 @@
 
 namespace RH.API.Services.Interface
 {
-    public interface IBcom
+    public interface IBcomService
     {
         (bool Sucesso, string Mensagem) AdicionarConta(Bcom bcom);
         List<Bcom> ListarContasBancarias();

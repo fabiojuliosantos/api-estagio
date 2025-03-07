@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RH.API.Services.Interface
 {
-    public interface IFuncionario
+    public interface IFuncionarioService
     {
         (bool Sucesso, string Mensagem) AdicionarFuncionario(Funcionario funcionario);
         List<Funcionario> ListarFuncionarios();

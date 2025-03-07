@@ -10,9 +10,9 @@ namespace RH.API.Controllers
     [ApiController]
     public class BcomController : ControllerBase
     {
-        private readonly IBcom _bcomService;
+        private readonly IBcomService _bcomService;
 
-        public BcomController(IBcom bcomService)
+        public BcomController(IBcomService bcomService)
         {
             _bcomService = bcomService;
         }

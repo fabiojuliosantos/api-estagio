@@ -4,7 +4,7 @@ using RH.API.Services.Interface;
 
 namespace RH.API.Services.Services
 {
-    public class AlunoService : IAluno
+    public class AlunoService : IAlunoService
     {
         private readonly List<Aluno> _alunos = new List<Aluno>();
         public (bool Sucesso, string Mensagem) AdicionarAluno(Aluno aluno)

@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace RH.API.Services.Services
 {
-    public class FuncionarioService : IFuncionario
+    public class FuncionarioService : IFuncionarioService
     {
         private readonly List<Funcionario> _funcionarios = new List<Funcionario>();
 

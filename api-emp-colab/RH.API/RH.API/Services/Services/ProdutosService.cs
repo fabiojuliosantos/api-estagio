@@ -4,7 +4,7 @@ using RH.API.Services.Interface;
 
 namespace RH.API.Services.Services
 {
-    public class ProdutosService : IProduto
+    public class ProdutosService : IProdutoService
     {
         private readonly List<Produto> _produto = new List<Produto>();
         public (bool Sucesso, string Mensagem) AdicionarProduto(Produto produto)

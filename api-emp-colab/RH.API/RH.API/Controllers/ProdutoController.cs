@@ -8,9 +8,9 @@ namespace RH.API.Controllers
     [ApiController]
     public class ProdutoController : ControllerBase
     {
-        private readonly IProduto _produtoService;
+        private readonly IProdutoService _produtoService;
 
-        public ProdutoController(IProduto produtoService)
+        public ProdutoController(IProdutoService produtoService)
         {
             _produtoService = produtoService;
         }
