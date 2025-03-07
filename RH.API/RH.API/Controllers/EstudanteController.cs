@@ -29,7 +29,7 @@ public class EstudanteController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    [HttpGet("{id}")]
+    [HttpGet("{matricula}")]
     public async Task<IActionResult> Listar(int matricula)
     {
         try
@@ -66,7 +66,7 @@ public class EstudanteController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-    [HttpDelete("{id}")]
+    [HttpDelete("{matricula}")]
     public async Task<IActionResult> Excluir(int matricula)
     {
         try
