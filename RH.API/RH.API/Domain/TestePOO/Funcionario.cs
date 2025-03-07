@@ -1,12 +1,12 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 
-namespace RH.API.Domain;
+namespace RH.API.Domain.TestePOO;
 
 public class Funcionario
 {
     public Funcionario()
     {
-        
+
     }
 
     public Funcionario(string nome, string cargo, string salario)

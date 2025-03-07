@@ -1,4 +1,4 @@
-﻿using RH.API.Domain;
+﻿using RH.API.Domain.TestePOO;
 
 namespace RH.API.Services.Interface.TestePOO;
 

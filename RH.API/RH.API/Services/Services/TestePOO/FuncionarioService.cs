@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using RH.API.Domain;
+using RH.API.Domain.TestePOO;
 using RH.API.Services.Interface.TestePOO;
 
 namespace RH.API.Services.Services.TestePOO;
@@ -12,7 +12,7 @@ public class FuncionarioService : IFuncionarioService
     {
         try
         {
-            if (_funcionarios != null)
+            if (_funcionarios.Count() != 0)
             {
                 List<Funcionario> funcionarios = _funcionarios;
                 return Task.FromResult(funcionarios);
@@ -61,6 +61,9 @@ public class FuncionarioService : IFuncionarioService
                 throw new Exception("O salário do funcionário não pode ser menor que o salário mínimo de R$1.518,00");
             }
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 }
