@@ -20,7 +20,8 @@ public class FuncionarioService : IFuncionarioService
         }
         else
         {
-            return funcionarios.Average(funcionario => funcionario.Salario);
+            var mediaSalarial = Math.Round(funcionarios.Average(funcionario => funcionario.Salario), 2);
+            return mediaSalarial;
         }
     }
 

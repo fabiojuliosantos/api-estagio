@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Globalization;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RH.API.Domain;
 using RH.API.Dto;
@@ -53,7 +54,7 @@ public class FuncionarioController : ControllerBase
         catch (Exception ex) { throw; }
     }
 
-    [HttpGet("calcular-salario")]
+    [HttpGet("calcular-media-salarial")]
     public  IActionResult CalcularSalario()
     {
         try
