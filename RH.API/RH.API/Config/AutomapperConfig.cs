@@ -11,6 +11,12 @@ namespace RH.API.Config
         {
             CreateMap<Funcionario, FuncionarioDTO>().ReverseMap();
             CreateMap<Funcionario, CreateFuncionarioDTO>().ReverseMap();
+
+            CreateMap<Produto, ProdutoDTO>().ReverseMap();
+            CreateMap<Produto, CreateProdutoDTO>().ReverseMap();
+
+            CreateMap<Estudante, EstudanteDTO>().ReverseMap();
+            CreateMap<Estudante, CreateEstudanteDTO>().ReverseMap();
         }
     }
 }

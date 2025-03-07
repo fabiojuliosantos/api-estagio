@@ -51,7 +51,7 @@ public class FuncionarioService : IFuncionarioService
 
             //se não existir um id igual ao que será atualizado
             if (!_funcionarios.Any(f => f.Id == entity.Id))
-                throw new Exception("Id não encontrao");
+                throw new Exception("Id não encontrado");
 
             //validação
             Validacao<TValidator>(entity);
