@@ -21,6 +21,26 @@ namespace RH.API.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("buscar-paginado/{pagina}/{quantidade}")]
+        public async Task<IActionResult> BuscarColaboradoresPorPagina(int pagina, int quantidade)
+        {
+            try
+            {
+                var colaboradores = await _service.BuscarColaboradoresPorPaginaAsync(pagina, quantidade);
+                if (colaboradores == null) return NotFound("Não foram encontrados colaboradores na base de dados.");
+
+                if (colaboradores.Colaboradores == null || !colaboradores.Colaboradores.Any())
+                {
+                    return NotFound("Não foram encontrados colaboradores para esta página.");
+                }
+                return Ok(colaboradores);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ocorreu um erro interno: {ex.Message}");
+            }
+        }
+
         [HttpGet]
         public async Task<IActionResult> BuscarTodos()
         {

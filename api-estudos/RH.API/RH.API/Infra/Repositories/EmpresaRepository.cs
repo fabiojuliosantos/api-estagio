@@ -27,6 +27,37 @@ public class EmpresaRepository : IEmpresaRepository
         catch (Exception) { throw; }
     }
 
+    public async Task<RetornoPaginado<Empresa>> BuscarEmpresasPorPagina(int pagina, int quantidade)
+    {
+        try
+        {
+            string sql = "SELECT * FROM EMPRESAS ORDER BY EMPRESAID OFFSET @OFFSET ROWS FETCH NEXT @QUANTIDADE ROWS ONLY";
+            var parametros = new
+            {
+                OFFSET = (pagina - 1) * quantidade,
+                QUANTIDADE = quantidade
+            };
+
+            var empresas = await _connection.QueryAsync<Empresa>(sql, parametros);
+
+            var totalEmpresas = "SELECT COUNT(*) FROM EMPRESAS";
+
+            var retornoTotalEmpresas = await _connection.ExecuteScalarAsync<int>(totalEmpresas);
+
+            return new RetornoPaginado<Empresa>()
+            {
+                Pagina = pagina,
+                QtdPagina = quantidade,
+                TotalRegistros = retornoTotalEmpresas,
+                Empresas = empresas.ToList()
+            };
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
     public async Task<List<Empresa>> BuscarTodasEmpresasAsync()
     {
         try
@@ -81,7 +112,4 @@ public class EmpresaRepository : IEmpresaRepository
         }
         catch (Exception ex) { throw; }
     }
-
-
-
 }

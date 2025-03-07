@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Microsoft.IdentityModel.Tokens;
 using RH.API.Domain;
+using RH.API.Dto;
 using RH.API.Infra.Interfaces;
 using RH.API.Services.Interface;
 
@@ -31,6 +32,19 @@ public class ColaboradorService : IColaboradorService
         catch (Exception ex)
         {
             throw new Exception("Erro ao atualizar colaborador", ex);
+        }
+    }
+
+    public async Task<RetornoColaborador<ColaboradorGetDto>> BuscarColaboradoresPorPaginaAsync(int pagina, int quantidade)
+    {
+        try
+        {
+            return await _repository.BuscarColaboradoresPorPagina(pagina, quantidade);
+
+        }
+        catch (Exception ex)
+        {
+            throw;
         }
     }
 

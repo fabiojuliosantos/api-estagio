@@ -4,6 +4,7 @@ namespace RH.API.Services.Interface
 {
     public interface IEmpresaService
     {
+        Task<RetornoPaginado<Empresa>> BuscarEmpresasPorPaginaAsync(int pagina, int quantidade);
         Task<List<Empresa>> BuscarTodasEmpresasAsync();
         Task<Empresa> BuscarEmpresaPorId(int id);
         Task<bool> InserirEmpresa(Empresa empresa);

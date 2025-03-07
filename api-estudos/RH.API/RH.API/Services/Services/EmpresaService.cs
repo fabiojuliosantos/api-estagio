@@ -22,6 +22,19 @@ namespace RH.API.Services.Services
             return await _repository.BuscarEmpresaPorId(id);
         }
 
+        public async Task<RetornoPaginado<Empresa>> BuscarEmpresasPorPaginaAsync(int pagina, int quantidade)
+        {
+            try
+            {
+               return await _repository.BuscarEmpresasPorPagina(pagina, quantidade);
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public async Task<List<Empresa>> BuscarTodasEmpresasAsync()
         {
 
