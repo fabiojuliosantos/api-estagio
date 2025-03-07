@@ -1,4 +1,5 @@
-﻿using RH.API.Domain;
+﻿using System.Globalization;
+using RH.API.Domain;
 using RH.API.Services.Interface;
 
 namespace RH.API.Services.Services
@@ -16,6 +17,8 @@ namespace RH.API.Services.Services
                 if (string.IsNullOrWhiteSpace(bcom.Titular)) return (false, "Titular da conta não pode ser vazio.");
                 if (bcom.Saldo < 0) return (false, "Saldo da conta não pode ser negativo.");
                 if (_bcom.Any(b => b.NumeroConta == bcom.NumeroConta)) return (false, "Número da conta já existe.");
+                // culture info para garantir que o valor seja salvo com ponto "." 
+                bcom.Saldo = double.Parse(bcom.Saldo.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
 
                 _bcom.Add(bcom);
                 return (true, "Conta adicionada com sucesso.");

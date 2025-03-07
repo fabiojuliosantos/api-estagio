@@ -61,10 +61,6 @@ namespace RH.API.Controllers
                 double saldo = _bcomService.ExibirSaldo(numeroConta);
                 return Ok(new { Saldo = saldo });
             }
-            catch (ArgumentException ex)
-            {
-                return NotFound(ex.Message);
-            }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Erro no servidor: {ex.Message}");
