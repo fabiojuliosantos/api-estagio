@@ -1,7 +1,7 @@
 ﻿// VALIDAÇÕES
 
 using System.Linq.Expressions;
-using RH.API.Domain;
+using RH.API.Domain.Entities;
 using RH.API.Infra.Interfaces;
 using RH.API.Services.Interface;
 

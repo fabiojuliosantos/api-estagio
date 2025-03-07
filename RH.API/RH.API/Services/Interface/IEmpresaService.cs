@@ -1,4 +1,4 @@
-﻿using RH.API.Domain;
+﻿using RH.API.Domain.Entities;
 
 namespace RH.API.Services.Interface;
 

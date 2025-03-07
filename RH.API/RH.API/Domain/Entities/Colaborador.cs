@@ -1,10 +1,10 @@
-﻿namespace RH.API.Domain;
+﻿namespace RH.API.Domain.Entities;
 
 public class Colaborador
 {
     public Colaborador()
     {
-        
+
     }
     public Colaborador(string nome, string cpf, int matricula, int empresaID, string nomeEmpresa)
     {

@@ -1,4 +1,4 @@
-﻿namespace RH.API.Domain;
+﻿namespace RH.API.Domain.Entities;
 
 public class RetornoPaginadoCol<Colaborador>
 {

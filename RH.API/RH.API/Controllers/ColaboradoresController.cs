@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RH.API.Data.Dtos;
-using RH.API.Domain;
+using RH.API.Domain.Entities;
 using RH.API.Infra.Context;
 using RH.API.Services.Interface;
 

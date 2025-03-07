@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RH.API.Domain;
+using RH.API.Domain.Entities;
 
 namespace RH.API.Infra.Context;
 

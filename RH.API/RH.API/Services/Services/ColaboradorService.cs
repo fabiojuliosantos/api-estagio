@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using RH.API.Domain;
+using RH.API.Domain.Entities;
 using RH.API.Infra.Interfaces;
 using RH.API.Infra.Repositories;
 using RH.API.Services.Interface;

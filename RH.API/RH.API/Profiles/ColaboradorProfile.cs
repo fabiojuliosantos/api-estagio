@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using RH.API.Data.Dtos;
-using RH.API.Domain;
+using RH.API.Domain.Entities;
 
 namespace RH.API.Profiles;
 

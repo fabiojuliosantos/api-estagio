@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using System.Globalization;
-using RH.API.Domain.TestePOO;
+using RH.API.Domain.Entities.TestePOO;
 using RH.API.Services.Interface.TestePOO;
 
 namespace RH.API.Services.Services.TestePOO;

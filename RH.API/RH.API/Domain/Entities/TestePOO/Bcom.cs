@@ -1,4 +1,4 @@
-﻿namespace RH.API.Domain.TestePOO;
+﻿namespace RH.API.Domain.Entities.TestePOO;
 
 public class Bcom
 {

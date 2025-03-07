@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RH.API.Data.Dtos.TestePOO;
 using RH.API.Domain;
-using RH.API.Domain.TestePOO;
+using RH.API.Domain.Entities.TestePOO;
 using RH.API.Services.Interface.TestePOO;
 
 namespace RH.API.Controllers.TestePOO;
