@@ -34,19 +34,10 @@ public class BcomController : Controller
         try
         {
             var bcom = _mapper.Map<Bcom>(bcomDto);
-            int resposta = _service.CriarConta(bcom);
-            switch (resposta)
-            {
-                case 1:
-                    return Ok(bcom);
-                case 2:
-                    return BadRequest("Digite uma conta válida!");
-                case 3:
-                    return BadRequest("O número da conta já existe!");
-            }
-            return Ok(bcom);
+            var resposta = _service.CriarConta(bcom);
+            return Ok(resposta);
         }
-        catch (Exception e) { throw; }
+        catch (Exception e) { return BadRequest(e.Message); }
     }
 
     [HttpPut("depositar")]
