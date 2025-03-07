@@ -34,6 +34,15 @@ builder.Services.AddScoped<IColaboradorRepository, ColaboradorRepository>();
 builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
 builder.Services.AddSingleton<IFuncionarioService, FuncionarioService>();
 
+builder.Services.AddScoped<IContaBancariaService, ContaBancariaService>();
+builder.Services.AddSingleton<IContaBancariaService, ContaBancariaService>();
+
+builder.Services.AddScoped<IProdutoService, ProdutoService>();
+builder.Services.AddSingleton<IProdutoService, ProdutoService>();
+
+builder.Services.AddScoped<IEstudanteService, EstudanteService>();
+builder.Services.AddSingleton<IEstudanteService, EstudanteService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
