@@ -39,6 +39,7 @@ builder.Services.AddScoped<IColaboradorService, ColaboradoresService>();
 builder.Services.AddSingleton<IBcom, BcomService>();
 builder.Services.AddSingleton<IFuncionario, FuncionarioService>();
 builder.Services.AddSingleton<IProduto, ProdutosService>();
+builder.Services.AddSingleton<IAluno, AlunoService>();
 #endregion
 #region Repositório
 builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
