@@ -40,23 +40,29 @@ public class VendasService : IVendasService
 
     public async Task<RelatorioVendaDto> RelatorioVendas(int id)
     {
-        var venda = _database.Vendas.FirstOrDefault(v => v.IdVenda == id)
-            ?? throw new KeyNotFoundException($"Venda com ID {id} não encontrada");
-
-        var produto = _database.Produtos.FirstOrDefault(p => p.ProdutoId == venda.ProdutoId)
-            ?? throw new KeyNotFoundException($"Produto com ID {venda.ProdutoId} não encontrado");
-
-        return new RelatorioVendaDto
+        try
         {
-            IdVenda = venda.IdVenda,
-            HoraVenda = venda.HoraVenda,
-            NomeProduto = produto.Nome,
-            ValorTotal = venda.ValorTotal,
-            QuantidadeVendida = venda.QuantidadeVendida
-        };
+            var venda = _database.Vendas.FirstOrDefault(v => v.IdVenda == id)
+                ?? throw new Exception($"Venda com ID {id} não encontrada");
+
+            var produto = _database.Produtos.FirstOrDefault(p => p.ProdutoId == venda.ProdutoId)
+                ?? throw new Exception($"Produto com ID {venda.ProdutoId} não encontrado");
+
+            return new RelatorioVendaDto
+            {
+                IdVenda = venda.IdVenda,
+                HoraVenda = venda.HoraVenda,
+                NomeProduto = produto.Nome,
+                ValorTotal = venda.ValorTotal,
+                QuantidadeVendida = venda.QuantidadeVendida
+            };
+        }catch(Exception ex)
+        {
+            throw new Exception("Ocorreu um erro ao processar a venda. Detalhes: " + ex.Message);
+        }
     }
 
-    public RespostaDTO VenderProduto(int produtoId, int quantidadeVendida)
+    public  RespostaDTO VenderProduto(int produtoId, int quantidadeVendida)
     {
         try
         {
@@ -89,7 +95,7 @@ public class VendasService : IVendasService
 
             _database.Vendas.Add(venda);
 
-            return new RespostaDTO(true, $"Venda realizada com sucesso {venda}");
+            return new RespostaDTO(true, $"Venda realizada com sucesso ");
         }
         catch
         {

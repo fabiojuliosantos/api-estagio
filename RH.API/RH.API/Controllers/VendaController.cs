@@ -16,7 +16,7 @@ public class VendaController : ControllerBase
         _service = service;
     }
 
-    [HttpGet("Relatório-Vendas{idVenda}")]
+    [HttpGet("Relatório-Vendas")]
 
     public async Task<IActionResult> RelatorioVendas(int idVenda)
     {
@@ -26,9 +26,9 @@ public class VendaController : ControllerBase
             var vendas = _service.RelatorioVendas(idVenda);
             return Ok(vendas);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw;
+            return StatusCode(500, new RespostaDTO(false, $"Erro interno: {ex.Message}"));
         }
 
     }
