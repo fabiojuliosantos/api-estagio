@@ -52,7 +52,7 @@ namespace RH.API.Services.Services
             try
             {
                 var livro = _livros.FirstOrDefault(l => l.CodigoBarras == codigoBarras);
-                if(livro == null)
+                if (livro == null)
                 {
                     return new RespostaDTO(false, "Livro não encotrado");
                 }
@@ -76,7 +76,7 @@ namespace RH.API.Services.Services
             try
             {
                 var livro = _livros.FirstOrDefault(l => l.CodigoBarras == codigoBarras);
-                if(livro == null)
+                if (livro == null)
                 {
                     return new RespostaDTO(false, "Livro não encontrado");
                 }
@@ -104,7 +104,7 @@ namespace RH.API.Services.Services
                 {
                     throw new Exception("Nenhum livro foi encontrado");
                 }
-                foreach(var livros in _livros)
+                foreach (var livros in _livros)
                 {
                     Console.WriteLine($"Titulo:{livros.Titulo}\n{livros.Autor}\n{livros.AnoPublicacao}\n{livros.Disponibilidade}");
                 }

@@ -11,5 +11,7 @@ public class ProdutoProfile : Profile
     {
         CreateMap<CriarProdutoDto, Produtos>();
         CreateMap<AdicionarEstudanteDto, Estudante>();
+        CreateMap<RelatorioVendaDto, Venda>();
+        CreateMap<VenderProdutoDto, Venda>();
     }
 }

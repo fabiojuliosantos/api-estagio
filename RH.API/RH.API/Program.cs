@@ -1,5 +1,6 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using RH.API.Domain;
 using RH.API.Infra.Context;
 using RH.API.Infra.Interfaces;
 using RH.API.Infra.Repositories;
@@ -10,10 +11,8 @@ using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configurações de serviços
 builder.Services.AddAutoMapper(typeof(Program));
 
-// Configuração do banco de dados
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddScoped<IDbConnection>(provider =>
@@ -33,6 +32,9 @@ builder.Services.AddSingleton<IbcomService, BcomService>();
 builder.Services.AddSingleton<IprodutoService, ProdutosService>();
 builder.Services.AddSingleton<IEstudanteService, EstudanteService>();
 builder.Services.AddSingleton<ILivroService, LivroService>();
+builder.Services.AddSingleton<IVendasService, VendasService>();
+builder.Services.AddSingleton<DatabaseTemp>();
+
 #endregion Services
 
 #region Repositories
@@ -44,10 +46,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Build da aplicação
 var app = builder.Build();
 
-// Configurações do pipeline de requisições
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -58,5 +58,4 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-// Executa a aplicação
 app.Run();
