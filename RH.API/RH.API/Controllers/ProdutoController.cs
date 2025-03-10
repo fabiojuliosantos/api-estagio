@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RH.API.DTOs;
 using RH.API.Services.Interface;
-using RH.API.Services.Services;
 
 namespace RH.API.Controllers;
 
@@ -44,7 +43,7 @@ public class ProdutoController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, $"Erro ao buscar por produto: {ex.Message}")
+            return StatusCode(500, $"Erro ao buscar por produto: {ex.Message}");
         }
     }
     [HttpPost("inserir")]

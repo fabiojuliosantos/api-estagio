@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RH.API.Domain;
 using RH.API.DTOs;
 using RH.API.Services.Interface;
 
@@ -44,6 +45,63 @@ public class EstudanteController : ControllerBase
         catch (Exception ex)
         {
             return StatusCode(500, $"Erro ao listar estudantes: {ex.Message}");
+        }
+    }
+
+    [HttpPost("inserir")]
+    public ActionResult<EstudanteDTO> AdicionarEstudante([FromBody] EstudanteDTO estudanteDTO)
+    {
+        try
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var novoEstudante = _estudanteService.AdicionarEstudante(estudanteDTO);
+            return CreatedAtAction(nameof(BuscarEstudantePorMatricula),
+                new { matricula = novoEstudante.Matricula }, novoEstudante);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro ao inserir estudante: {ex.Message}");
+        }
+    }
+
+    [HttpPut("atualizar-matricula/{matriculaAntiga}")]
+    public IActionResult AtualizarMatricula(string matriculaAntiga, [FromBody] string matriculaNova)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_estudanteService.AtualizarMatricula(matriculaAntiga, matriculaNova))
+            {
+                return NotFound("Matrícula não encontrada para atualizar");
+            }
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro ao atualizar matrícula: {ex.Message}");
+        }
+    }
+
+    [HttpDelete("remover/{matricula}")]
+    public IActionResult RemoverEstudante(string matricula)
+    {
+        try
+        {
+            if (!_estudanteService.RemoverEstudante(matricula))
+            {
+                return NotFound("matricula nao encontrada");
+            }
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro ao remover matricula: {ex.Message}");
         }
     }
 }

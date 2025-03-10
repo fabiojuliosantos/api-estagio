@@ -27,6 +27,9 @@ builder.Services.AddScoped<IColaboradorService, ColaboradorService>();
 builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
 builder.Services.AddScoped<IContaBancariaService, ContaBancariaService>();
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
+builder.Services.AddScoped<IBibliotecaService, BibliotecaService>();
+builder.Services.AddScoped<IEstudanteService, EstudanteService>();
+builder.Services.AddScoped<IEstoqueService, EstoqueService>();
 #endregion
 
 #region Repositories

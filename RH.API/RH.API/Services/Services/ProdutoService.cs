@@ -71,7 +71,6 @@ public class ProdutoService : IProdutoService
             throw;
         }
     }
-
     public bool AtualizarProduto(ProdutoDTO produtoDTO)
     {
         try

@@ -28,7 +28,7 @@ public class EstudanteService : IEstudanteService
 
             var novoEstudante = new Estudante
             {
-                Id = _proximoId,
+                Id = _proximoId++,
                 Nome = estudanteDTO.Nome,
                 Idade = estudanteDTO.Idade,
                 Curso = estudanteDTO.Curso,
