@@ -34,6 +34,7 @@ builder.Services.AddSingleton<IFuncionarioService, FuncionarioService>();
 builder.Services.AddSingleton<IBcomService, BcomService>();
 builder.Services.AddSingleton<IProdutoService, ProdutoService>();
 builder.Services.AddSingleton<IEstudanteService, EstudanteService>();
+builder.Services.AddSingleton<ILivroService, LivroService>();
 #endregion
 
 #region Repository
