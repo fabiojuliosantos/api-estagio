@@ -32,11 +32,16 @@ namespace rh.api.Controllers
         [HttpPost("vender-produtos")]
         public async Task<IActionResult> VenderProduto([FromBody] VendaRequest vendaRequest)
         {
-            var result = await _produtoVendaService.VenderProduto(vendaRequest.ProdutoId, vendaRequest.Quantidade);
-            if (result.Sucesso)
-                return Ok(result.Mensagem);
-            else
-                return BadRequest(result.Mensagem);
+            try
+            {
+                var result = await _produtoVendaService.VenderProduto(vendaRequest.ProdutoId, vendaRequest.Quantidade);
+                if (result.Sucesso)
+                    return Ok(result.Mensagem);
+                else
+                    return BadRequest(result.Mensagem);
+            }
+            catch (Exception) { throw; }
+
         }
 
         [HttpGet("listar-produtos")]
@@ -70,8 +75,13 @@ namespace rh.api.Controllers
         [HttpGet("relatorio-vendas")]
         public async Task<IActionResult> GerarRelatorioVendas()
         {
-            var relatorio = await _produtoVendaService.GerarRelatorioVendas();
-            return Ok(relatorio);
+            try
+            {
+                var relatorio = await _produtoVendaService.GerarRelatorioVendas();
+                return Ok(relatorio);
+            }
+            catch (Exception) { throw; }
+
         }
     }
 }
