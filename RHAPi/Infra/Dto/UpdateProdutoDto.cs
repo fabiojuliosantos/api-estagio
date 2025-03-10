@@ -11,8 +11,8 @@ public class UpdateProdutoDto
     public string? NomeProduto { get; set; }
 
     [Range(1, double.MaxValue, ErrorMessage = "O Preço do produto deve ser maior que zero")]
-    public decimal Preco { get; set; }
+    public decimal? Preco { get; set; }
 
     [Range(1, int.MaxValue, ErrorMessage = "A quantidade do produto deve ser maior que zero")]
-    public int QuantidaEstoque { get; set; }
+    public int? QuantidaEstoque { get; set; }
 }

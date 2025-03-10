@@ -30,8 +30,8 @@ public class ProdutoService : IProdutoService
             Produto produto = _estoque[index] ?? throw new CustomerException("Produto não foi encontrado");
 
             produto.NomeProduto = produtoDto.NomeProduto ?? produto.NomeProduto;
-            produto.Preco = produtoDto.Preco > 0 ? produtoDto.Preco : produto.Preco;
-            produto.QuantidaEstoque = produtoDto.QuantidaEstoque > 0 ? produto.QuantidaEstoque + produtoDto.QuantidaEstoque : produto.QuantidaEstoque;
+            produto.Preco = produtoDto.Preco.HasValue && produtoDto.Preco > 0 ? (decimal)produtoDto.Preco : produto.Preco;
+            produto.QuantidaEstoque = produtoDto.QuantidaEstoque.HasValue && produtoDto.QuantidaEstoque > 0 ? produto.QuantidaEstoque + (int)produtoDto.QuantidaEstoque : produto.QuantidaEstoque;
 
             _estoque[index] = produto;
 
