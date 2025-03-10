@@ -36,7 +36,7 @@ public class BcomsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return StatusCode(500, new { message = "Erro ao processar a solicitação!", error = ex.Message });
         }
     }
 
@@ -63,7 +63,7 @@ public class BcomsController : ControllerBase
         {
             var resultadoSaque = await _service.Sacar(numeroConta, valorSaque);
             if (resultadoSaque)
-                return StatusCode(204, new { message = "Saque realizado com sucesso!" });
+                return Ok("Saque realizado com sucesso!");
 
             return StatusCode(400, new { message = "Erro ao realizar saque!" });
         }
@@ -80,7 +80,7 @@ public class BcomsController : ControllerBase
         {
             var resultadoDeposito = await _service.Depositar(numeroConta, valorDeposito);
             if (resultadoDeposito)
-                return StatusCode(204, new { message = "Deposito realizado com sucesso!" });
+                return Ok("Deposito realizado com sucesso!");
 
             return StatusCode(400, new { message = "Erro ao realizar deposito!" });
         }

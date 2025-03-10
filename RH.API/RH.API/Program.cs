@@ -33,6 +33,8 @@ builder.Services.AddSingleton<IFuncionarioService, FuncionarioService>();
 builder.Services.AddSingleton<IBcomService, BcomService>();
 builder.Services.AddSingleton<IProdutoService, ProdutoService>();
 builder.Services.AddSingleton<IEstudanteService, EstudanteService>();
+builder.Services.AddSingleton<ILivroService, LivroService>();
+builder.Services.AddSingleton<IProduto2Service, Produto2Service>();
 #endregion
 
 #region Repositories
@@ -46,6 +48,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

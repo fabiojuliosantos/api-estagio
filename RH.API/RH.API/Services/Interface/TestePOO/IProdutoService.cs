@@ -6,5 +6,5 @@ public interface IProdutoService
 {
     Task<bool> InserirProduto(Produto produto);
     Task<List<Produto>> BuscarTodosProdutos();
-    Task<bool> AtualizarProduto(int id);
+    Task<bool> AtualizarProduto(Produto produto);
 }

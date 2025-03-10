@@ -6,9 +6,34 @@ namespace RH.API.Services.Services.TestePOO;
 public class ProdutoService : IProdutoService
 {
     private readonly List<Produto> _produtos = [];
-    public Task<bool> AtualizarProduto(int id)
+    public Task<bool> AtualizarProduto(Produto produto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            Produto produtoAntigo = _produtos.FirstOrDefault(p => p.Id == produto.Id);
+
+            if (produtoAntigo == null) throw new Exception("Produto não registrado!");
+
+            if (produto.Preco <= 0) throw new Exception("Preço inserido inválido!");
+
+            if (produto.QtdEstoque <= 0) throw new Exception("Quantidade em estoque inserida inválida!");
+
+            else
+            {
+                // Obtém o índice do produto encontrado na lista
+                int index = _produtos.IndexOf(produtoAntigo);
+
+                // Substitui o produto antigo pelo novo
+                _produtos[index] = produto;
+
+                return Task.FromResult(true);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+
     }
 
     public Task<List<Produto>> BuscarTodosProdutos()
