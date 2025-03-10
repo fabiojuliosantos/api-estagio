@@ -37,7 +37,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
 builder.Services.AddScoped<IColaboradorService, ColaboradoresService>();
 builder.Services.AddSingleton<IBcomService, BcomService>();
-builder.Services.AddSingleton<IFuncionarioService, FuncionarioService>();
+builder.Services.AddSingleton<FuncionarioService>();
 builder.Services.AddSingleton<IProdutoService, ProdutosService>();
 builder.Services.AddSingleton<IAlunoService, AlunoService>();
 builder.Services.AddSingleton<ILivroService, LivroService>();
