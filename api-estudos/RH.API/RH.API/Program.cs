@@ -24,6 +24,8 @@ builder.Services.AddScoped<IDbConnection>(provider =>
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionString));
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(typeof(EstudanteProfile));
+
 
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
 builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
@@ -42,6 +44,13 @@ builder.Services.AddSingleton<IProdutoService, ProdutoService>();
 
 builder.Services.AddScoped<IEstudanteService, EstudanteService>();
 builder.Services.AddSingleton<IEstudanteService, EstudanteService>();
+
+builder.Services.AddScoped<IBibliotecaService, BibliotecaService>();
+builder.Services.AddSingleton<IBibliotecaService, BibliotecaService>();
+
+builder.Services.AddScoped<IEstoqueService, EstoqueService>();
+builder.Services.AddSingleton<IEstoqueService, EstoqueService>();
+
 
 
 builder.Services.AddControllers();

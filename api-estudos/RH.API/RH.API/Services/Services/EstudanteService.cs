@@ -1,7 +1,6 @@
-﻿using RH.API.Domain;
+﻿using AutoMapper;
+using RH.API.Domain;
 using RH.API.Services.Interface;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace RH.API.Services
@@ -9,22 +8,33 @@ namespace RH.API.Services
     public class EstudanteService : IEstudanteService
     {
         private static List<Estudante> estudantes = new List<Estudante>();
+        private readonly IMapper _mapper;
+
+        public EstudanteService(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         public (bool Sucesso, string Mensagem) AdicionarEstudante(Estudante estudante)
         {
-
             if (estudantes.Any(e => e.Matricula == estudante.Matricula))
             {
                 return (false, "Matrícula já cadastrada.");
             }
 
-            if (!Regex.IsMatch(estudante.Nome, @"^[a-zA-Z]+$"))
+            if (estudante.Matricula <= 0)
             {
-                return (false, "O nome deve conter apenas letras.");
+                return (false, "A matrícula deve ser um número válido maior que 0.");
             }
 
-            if (!Regex.IsMatch(estudante.Curso, @"^[a-zA-Z]+$"))
+            if (!Regex.IsMatch(estudante.Nome, @"^[\p{L} ]+$"))
             {
-                return (false, "O curso deve conter apenas letras.");
+                return (false, "O nome deve conter apenas letras e espaços.");
+            }
+
+            if (!Regex.IsMatch(estudante.Curso, @"^[\p{L} ]+$"))
+            {
+                return (false, "O curso deve conter apenas letras e espaços.");
             }
 
             if (estudante.Idade <= 0)
@@ -32,7 +42,6 @@ namespace RH.API.Services
                 return (false, "A idade deve ser um número válido maior que 0.");
             }
 
-            // Adiciona o estudante à lista se todas as validações passarem
             estudantes.Add(estudante);
             return (true, "Estudante adicionado com sucesso.");
         }
@@ -52,7 +61,7 @@ namespace RH.API.Services
             return (true, "Estudante encontrado.", estudante);
         }
 
-        public (bool Sucesso, string Mensagem) AtualizarEstudante(int matricula, Estudante estudanteAtualizado)
+        public (bool Sucesso, string Mensagem) AtualizarEstudante(int matricula, EstudantePutDto estudanteDto)
         {
             var estudanteExistente = estudantes.FirstOrDefault(e => e.Matricula == matricula);
             if (estudanteExistente == null)
@@ -60,10 +69,22 @@ namespace RH.API.Services
                 return (false, "Estudante não encontrado.");
             }
 
-            estudanteExistente.Nome = estudanteAtualizado.Nome;
-            estudanteExistente.Idade = estudanteAtualizado.Idade;
-            estudanteExistente.Curso = estudanteAtualizado.Curso;
+            if (!Regex.IsMatch(estudanteDto.Nome, @"^[\p{L} ]+$"))
+            {
+                return (false, "O nome deve conter apenas letras e espaços.");
+            }
 
+            if (!Regex.IsMatch(estudanteDto.Curso, @"^[\p{L} ]+$"))
+            {
+                return (false, "O curso deve conter apenas letras e espaços.");
+            }
+
+            if (estudanteDto.Idade <= 0)
+            {
+                return (false, "A idade deve ser um número válido maior que 0.");
+            }
+
+            _mapper.Map(estudanteDto, estudanteExistente);
             return (true, "Dados do estudante atualizados com sucesso.");
         }
     }

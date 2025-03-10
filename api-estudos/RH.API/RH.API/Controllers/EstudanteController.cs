@@ -1,69 +1,69 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RH.API.Domain;
+using RH.API.Services.Interface;
 
-namespace RH.API.Controllers
+[ApiController]
+[Route("api/[controller]")]
+public class EstudanteController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class EstudanteController : ControllerBase
+    private readonly IEstudanteService _estudanteService;
+
+    public EstudanteController(IEstudanteService estudanteService)
     {
-        private static List<Estudante> estudantes = new List<Estudante>();
+        _estudanteService = estudanteService;
+    }
 
-        [HttpPost]
-        public ActionResult<Estudante> AdicionarEstudante([FromBody] Estudante estudante)
+    [HttpPost]
+    public ActionResult AdicionarEstudante([FromBody] Estudante estudante)
+    {
+        try
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                // Adiciona estudante diretamente à lista
-                estudantes.Add(estudante);
+            var resultado = _estudanteService.AdicionarEstudante(estudante);
+            if (!resultado.Sucesso)
+                return BadRequest(resultado.Mensagem);
 
-                return CreatedAtAction(nameof(ExibirEstudantes), new { matricula = estudante.Matricula }, estudante);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Erro interno: {ex.Message}");
-            }
+            return CreatedAtAction(nameof(ExibirEstudantes), new { matricula = estudante.Matricula }, estudante);
         }
-
-        [HttpGet]
-        public ActionResult<IEnumerable<Estudante>> ExibirEstudantes()
+        catch (Exception ex)
         {
-            try
-            {
-                return Ok(estudantes);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Erro interno: {ex.Message}");
-            }
+            return StatusCode(500, $"Erro interno: {ex.Message}");
         }
+    }
 
-        [HttpPut("{matricula}")]
-        public ActionResult AtualizarEstudante(int matricula, [FromBody] Estudante estudante)
+    [HttpGet]
+    public ActionResult<IEnumerable<Estudante>> ExibirEstudantes()
+    {
+        try
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+            var resultado = _estudanteService.ListarEstudantes();
+            return Ok(resultado.Estudantes);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro interno: {ex.Message}");
+        }
+    }
 
-                var estudanteExistente = estudantes.FirstOrDefault(e => e.Matricula == matricula);
-                if (estudanteExistente == null)
-                    return NotFound("Estudante não encontrado.");
+    [HttpPut("{matricula}")]
+    public ActionResult AtualizarEstudante(int matricula, [FromBody] EstudantePutDto estudante)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                // Atualiza diretamente os dados do estudante encontrado
-                estudanteExistente.Nome = estudante.Nome;
-                estudanteExistente.Idade = estudante.Idade;
-                estudanteExistente.Curso = estudante.Curso;
+            var resultado = _estudanteService.AtualizarEstudante(matricula, estudante);
+            if (!resultado.Sucesso)
+                return NotFound(resultado.Mensagem);
 
-                return Ok("Dados do estudante atualizados com sucesso.");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Erro interno: {ex.Message}");
-            }
+            return Ok(resultado.Mensagem);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro interno: {ex.Message}");
         }
     }
 }
