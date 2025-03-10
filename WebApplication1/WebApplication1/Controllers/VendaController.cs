@@ -36,6 +36,7 @@ public class VendaController : Controller
             else
             {
                 var produtoVendido = _produtoService.VenderProduto(venda.IdProduto, venda.Quantidade);
+                venda.NomeDoProduto = produtoVendido.Nome;
                 venda.ValorTotal = (produtoVendido.Preco * venda.Quantidade);
                 var resultado = _service.AdicionarNovaVenda(venda);
                 return Ok(resultado);

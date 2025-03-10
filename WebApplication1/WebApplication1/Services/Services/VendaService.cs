@@ -7,6 +7,7 @@ public class VendaService : IVendaService
 {
     List<Venda> vendas = new List<Venda>();
     int id = 1;
+
     public Venda AdicionarNovaVenda(Venda venda)
     {
         try
@@ -15,13 +16,13 @@ public class VendaService : IVendaService
             {
                 throw new Exception("Venda é inválida!");
             }
-            else if (vendas.Find(v => v.Id == venda.Id) != null)
+            else if (vendas.Find(v => v.IdVenda == venda.IdVenda) != null)
             {
-                throw new Exception($"A venda com id {venda.Id} já existe!");
+                throw new Exception($"A venda com id {venda.IdVenda} já existe!");
             }
             else
             {
-                venda.Id = id;
+                venda.IdVenda = id;
                 vendas.Add(venda);
                 id++;
                 return venda;
