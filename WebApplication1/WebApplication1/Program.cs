@@ -30,6 +30,7 @@ builder.Services.AddSingleton<IBcomService, BcomService>();
 builder.Services.AddSingleton<IProdutoService, ProdutoService>();
 builder.Services.AddSingleton<IEstudanteService, EstudanteService>();
 builder.Services.AddSingleton<ILivroService, LivroService>();
+builder.Services.AddSingleton<IVendaService, VendaService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
